@@ -93,3 +93,17 @@ class Variant(models.Model):
         sku = f'{self.product.id}{self.product.brand.abbreviation}{self.size}{self.color.abbreviation}'
         self.sku = sku.upper()
         super(Product, self).save(*args, **kwargs)
+
+
+class PromoCode(models.Model):
+    PROMO_CODE_TYPES = [
+        (1, 'Employee'),
+        (2, 'Referral'),
+        (3, 'Offer'),
+        (4, 'New Customer')
+    ]
+
+    active = models.BooleanField()
+    code = models.CharField(max_length=10)
+    discount_percent = models.IntegerField()
+    type = models.IntegerField(choices=PROMO_CODE_TYPES)
