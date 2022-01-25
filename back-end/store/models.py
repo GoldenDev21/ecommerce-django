@@ -107,3 +107,22 @@ class PromoCode(models.Model):
     code = models.CharField(max_length=10)
     discount_percent = models.IntegerField()
     type = models.IntegerField(choices=PROMO_CODE_TYPES)
+
+
+class Order(models.Model):
+    STATUS_CHOICES = [
+        (1, 'Waiting for payment'),
+        (2, 'Paid'),
+        (3, 'Shipped'),
+        (4, 'Delivered'),
+        (5, 'Cancelled')
+    ]
+    profile = models.ForeignKey('accounts.Profile', related_name='orders', on_delete=models.CASCADE)
+    status = models.IntegerField(choices=STATUS_CHOICES)
+    discount_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE)
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
