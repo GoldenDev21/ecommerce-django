@@ -5,7 +5,7 @@ from .models import CustomUser, Profile, Address
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = ['id', 'profile', 'primary', 'type', 'line_1', 'line_2', 'city', 'state', 'zip']
+        fields = ['id', 'primary', 'type', 'line_1', 'line_2', 'city', 'state', 'zip']
 
 
 class UserSerializer(serializers.ModelSerializer):
