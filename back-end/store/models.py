@@ -14,6 +14,9 @@ class Color(models.Model):
     name = models.CharField(max_length=20, unique=True)
     abbreviation = models.CharField(max_length=3, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -119,7 +122,7 @@ class Order(models.Model):
     ]
     profile = models.ForeignKey('accounts.Profile', related_name='orders', on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICES)
-    discount_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE)
+    promo_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE)
 
 
 class OrderItem(models.Model):
