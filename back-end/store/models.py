@@ -104,7 +104,7 @@ class PromoCode(models.Model):
     ]
 
     active = models.BooleanField()
-    code = models.CharField(max_length=10)
+    code = models.CharField(max_length=10, unique=True)
     discount_percent = models.IntegerField()
     type = models.IntegerField(choices=PROMO_CODE_TYPES)
 
