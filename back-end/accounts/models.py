@@ -21,20 +21,21 @@ class CustomUser(AbstractUser):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-    mailing_list = models.BooleanField()
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    mailing_list = models.BooleanField(null=True)
 
 
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and not instance.is_staff:
         Profile.objects.create(user=instance)
+    instance.profile.save()
 
 
 @receiver(post_save, sender=CustomUser)
 def save_user_profile(sender, instance, **kwargs):
     if not instance.is_staff:
-        instance.profile.save()
+        instance.profile.save(user=instance)
 
 
 class Address(models.Model):
@@ -42,7 +43,7 @@ class Address(models.Model):
         (1, 'Shipping'),
         (2, 'Billing')
     ]
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='addresses')
     primary = models.BooleanField()
     type = models.IntegerField(choices=ADDRESS_TYPE_CHOICES)
     line_1 = models.CharField(max_length=120)
