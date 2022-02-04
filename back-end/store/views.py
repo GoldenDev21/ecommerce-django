@@ -3,9 +3,38 @@ from .serializers import *
 from .models import Brand, Color, Category, SubCategory, Product, Variant, PromoCode, Order, OrderItem
 
 
-class BrandViewSet(viewsets.ModelViewSet):
+class BrandListView(generics.ListAPIView):
+    """
+    API endpoint that returns a list of brands.
+
+    Accessible by all.
+    """
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+
+
+class BrandCreateView(generics.ListCreateAPIView):
+    """
+    API endpoint that returns a list of brands & allows creation of a new brand.
+
+    Accessible only by store managers.
+    """
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class BrandEditView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    API endpoint that returns a brand & allows editing or deleting that brand.
+
+    Accessible only by store managers.
+    """
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+    lookup_field = 'pk'
 
 
 class ColorViewSet(viewsets.ModelViewSet):
