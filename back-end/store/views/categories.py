@@ -1,37 +1,69 @@
-from rest_framework import generics
-from store.serializers import BrandSerializer, CategorySerializer
-from store.models import Brand, Category
+from store.serializers import CategorySerializer
+from store.models import Category
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
 
 
-class CategoryListView(generics.ListAPIView):
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def categories_list_view(request):
     """
-    API endpoint that returns a list of categories.
+    View that returns a list of all categories.
 
     Accessible by all.
     """
-    queryset = Brand.objects.all()
-    serializer_class = BrandSerializer
+    serializer = CategorySerializer(Category.objects.all(), many=True)
+    return Response(serializer.data)
 
 
-class CategoryCreateView(generics.CreateAPIView):
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAdminUser])
+def category_edit_delete_view(request, pk):
     """
-    API endpoint that allows creation of a new category.
+    View that allows the update or deletion of a single category.
 
-    Accessible only by store managers.
+    Accessible only by admin.
     """
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    try:
+        category = Category.objects.get(pk=pk)
+    except category.DoesNotExist:
+        return Response(status=404)
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+    if request.method == 'GET':
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = CategorySerializer(category, data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+    elif request.method == 'DELETE':
+        category.delete()
+        return Response(status=204)
 
 
-class CategoryEditView(generics.RetrieveUpdateDestroyAPIView):
+@api_view(['GET', 'POST'])
+@permission_classes([IsAdminUser])
+def category_create_view(request):
     """
-    API endpoint that returns a category & allows editing or deleting that category.
+    Allows the creation of a single category or lists all categories.
 
-    Accessible only by store managers.
+    Accessible only by admin.
+    :param request:
+    :return:
     """
-    serializer_class = CategorySerializer
-    queryset = Category.objects.all()
-    lookup_field = 'pk'
+    if request.method == 'GET':
+        serializer = CategorySerializer(Category.objects.all(), many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = CategorySerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
