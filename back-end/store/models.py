@@ -33,29 +33,12 @@ class Category(models.Model):
         return self.name
 
 
-class SubCategory(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.CASCADE)
-    url_key = models.SlugField(unique=True)
-    description = models.TextField()
-    image = models.ImageField()
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.url_key = slugify(self.name)
-        super(SubCategory, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
-
-
 class Product(models.Model):
     name = models.CharField(max_length=120, unique=True)
     brand = models.ForeignKey(Brand, related_name='products', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     description = models.TextField(max_length=1500)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
-    sub_category = models.ForeignKey(SubCategory, related_name='products', on_delete=models.CASCADE)
     url_key = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):

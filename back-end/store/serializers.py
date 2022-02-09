@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from accounts.serializers import ProfileSerializer
-from .models import Brand, Color, Category, SubCategory, Product, Variant, PromoCode, Order, OrderItem
+from .models import Brand, Color, Category, Product, Variant, PromoCode, Order, OrderItem
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -22,22 +22,13 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'url_key', 'description', 'image']
 
 
-class SubCategorySerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
-
-    class Meta:
-        model = SubCategory
-        fields = ['id', 'name', 'category', 'url_key', 'description', 'image']
-
-
 class ProductSerializer(serializers.ModelSerializer):
     brand = BrandSerializer()
     category = CategorySerializer()
-    sub_category = SubCategorySerializer()
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'brand', 'price', 'description', 'category', 'sub_category', 'url_key']
+        fields = ['id', 'name', 'brand', 'price', 'description', 'category', 'url_key']
 
 
 class VariantSerializer(serializers.ModelSerializer):
