@@ -1,6 +1,6 @@
-from rest_framework import viewsets, generics, permissions
-from store.serializers import OrderSerializer, OrderItemSerializer
-from store.models import Order, OrderItem
+from rest_framework import generics, permissions
+from store.serializers import OrderSerializer
+from store.models import Order
 
 
 class OrderListCreateView(generics.ListAPIView):
@@ -39,8 +39,3 @@ class OrderEditView(generics.RetrieveUpdateAPIView):
     lookup_field = 'pk'
     permission_classes = [permissions.IsAuthenticated]
     # TODO: Only allow users to edit their own orders, unless they are an admin.
-
-
-class OrderItemViewSet(viewsets.ModelViewSet):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer
