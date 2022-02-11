@@ -5,6 +5,7 @@ from accounts.views import UserViewSet, ProfileViewSet, AddressViewSet
 from store.views.products import ProductEditDeleteView, ProductCreateView, ProductListView
 from store.views.brands import BrandCreateView, BrandEditDeleteView, BrandListView
 from store.views.categories import CategoryListView, CategoryCreateView, CategoryEditDeleteView
+from store.views.promo_codes import PromoCodeListCreateView, PromoCodeEditDeleteView
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -27,6 +28,9 @@ urlpatterns = [
     # Products
     path('api/admin/products', ProductCreateView.as_view()),
     path('api/admin/products/<pk>', ProductEditDeleteView.as_view()),
+    # Promo Codes
+    path('api/admin/promo_codes', PromoCodeListCreateView.as_view()),
+    path('api/admin/promo_codes/<pk>', PromoCodeEditDeleteView.as_view()),
     # Other
     path('api-auth/', include('rest_framework.urls')),
 ]
