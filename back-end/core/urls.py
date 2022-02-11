@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from accounts.views import UserViewSet, ProfileViewSet, AddressViewSet
+from accounts.views import UserListCreateView, UserRetrieveEditDestroyView, UserRetrieveEditView, UserCreateView, ProfileRetrieveUpdateView
 from store.views.products import ProductEditDeleteView, ProductCreateView, ProductListView
 from store.views.brands import BrandCreateView, BrandEditDeleteView, BrandListView
 from store.views.categories import CategoryListView, CategoryCreateView, CategoryEditDeleteView
@@ -9,9 +9,6 @@ from store.views.promo_codes import PromoCodeListCreateView, PromoCodeEditDelete
 from store.views.orders import OrderEditView, OrderListCreateView, OrderRetrieveEditDeleteView
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'profiles', ProfileViewSet)
-router.register(r'addresses', AddressViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,6 +19,9 @@ urlpatterns = [
     path('api/products/', ProductListView.as_view()),
     path('api/orders/', OrderListCreateView.as_view()),  # api/orders/{user}
     path('api/orders/<pk>/', OrderEditView.as_view()),  # api/orders/{user}/{pk}
+    path('api/users', UserCreateView.as_view()),
+    path('api/users/<pk>', UserRetrieveEditView.as_view()),
+    path('api/users/profile/<pk>', ProfileRetrieveUpdateView.as_view()),
     # Brands
     path('api/admin/brands/', BrandCreateView.as_view()),
     path('api/admin/brands/<pk>/', BrandEditDeleteView.as_view()),
@@ -37,6 +37,9 @@ urlpatterns = [
     # Promo Codes
     path('api/admin/promo_codes/', PromoCodeListCreateView.as_view()),
     path('api/admin/promo_codes/<pk>/', PromoCodeEditDeleteView.as_view()),
+    # Users
+    path('api/admin/users/', UserListCreateView.as_view()),
+    path('api/admin/users/<pk>/', UserRetrieveEditDestroyView.as_view()),
     # Other
     path('api-auth/', include('rest_framework.urls')),
 ]
