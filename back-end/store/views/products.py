@@ -39,10 +39,10 @@ class ProductCreateView(generics.ListCreateAPIView):
 
 class VariantListView(generics.ListAPIView):
     """
-   View that returns a list of all variants.
+    View that returns a list of all variants.
 
-   Accessible by all.
-   """
+    Accessible by all.
+    """
     serializer_class = VariantSerializer
     queryset = Variant.objects.all()
     permission_classes = [permissions.AllowAny]
