@@ -2,9 +2,9 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from accounts.views import UserViewSet, ProfileViewSet, AddressViewSet
-from store.views.products import product_edit_delete_view, product_create_view, products_list_view
-from store.views.brands import brand_create_view, brand_edit_delete_view, brands_list_view
-from store.views.categories import categories_list_view, category_create_view, category_edit_delete_view
+from store.views.products import ProductEditDeleteView, ProductCreateView, ProductListView
+from store.views.brands import BrandCreateView, BrandEditDeleteView, BrandListView
+from store.views.categories import CategoryListView, CategoryCreateView, CategoryEditDeleteView
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -15,18 +15,18 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     # Public
-    path('api/brands/', brands_list_view),
-    path('api/categories', categories_list_view),
-    path('api/products', products_list_view),
+    path('api/brands/', BrandListView.as_view()),
+    path('api/categories', CategoryListView.as_view()),
+    path('api/products', ProductListView.as_view()),
     # Brands
-    path('api/admin/brands', brand_create_view),
-    path('api/admin/brands/<pk>', brand_edit_delete_view),
+    path('api/admin/brands', BrandCreateView.as_view()),
+    path('api/admin/brands/<pk>', BrandEditDeleteView.as_view()),
     # Categories
-    path('api/admin/categories', category_create_view),
-    path('api/admin/categories/<pk>', category_edit_delete_view),
+    path('api/admin/categories', CategoryCreateView.as_view()),
+    path('api/admin/categories/<pk>', CategoryEditDeleteView.as_view()),
     # Products
-    path('api/admin/products', product_create_view),
-    path('api/admin/products/<pk>', product_edit_delete_view),
+    path('api/admin/products', ProductCreateView.as_view()),
+    path('api/admin/products/<pk>', ProductEditDeleteView.as_view()),
     # Other
     path('api-auth/', include('rest_framework.urls')),
 ]
