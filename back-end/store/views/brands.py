@@ -22,8 +22,7 @@ class BrandEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
     """
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
-    lookup_field = 'pk'
-    permission_classes = [permissions.IsAdminUser]
+    # permission_classes = [permissions.IsAdminUser]
 
 
 class BrandCreateView(generics.ListCreateAPIView):
@@ -34,4 +33,15 @@ class BrandCreateView(generics.ListCreateAPIView):
     """
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
-    permission_classes = [permissions.IsAdminUser]
+    # permission_classes = [permissions.IsAdminUser]
+
+
+class BrandDetailView(generics.RetrieveAPIView):
+    """
+    View that returns a single brand.
+
+    Accessible by all.
+    """
+    serializer_class = BrandSerializer
+    queryset = Brand.objects.all()
+    lookup_field = 'url_key'

@@ -3,7 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 from accounts.views import UserListCreateView, UserRetrieveEditDestroyView, UserRetrieveEditView, UserCreateView, ProfileRetrieveUpdateView
 from store.views.products import ProductEditDeleteView, ProductCreateView, ProductListView
-from store.views.brands import BrandCreateView, BrandEditDeleteView, BrandListView
+from store.views.brands import BrandCreateView, BrandEditDeleteView, BrandListView, BrandDetailView
 from store.views.categories import CategoryListView, CategoryCreateView, CategoryEditDeleteView
 from store.views.promo_codes import PromoCodeListCreateView, PromoCodeEditDeleteView
 from store.views.orders import OrderEditView, OrderListCreateView, OrderRetrieveEditDeleteView
@@ -14,6 +14,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     # Public
+    path('api/brands/<url_key>/', BrandDetailView.as_view()),
     path('api/brands/', BrandListView.as_view()),
     path('api/categories/', CategoryListView.as_view()),
     path('api/products/', ProductListView.as_view()),
