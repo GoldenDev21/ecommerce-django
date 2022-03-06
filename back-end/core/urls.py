@@ -14,11 +14,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     # Public
-    path('api/brands/<url_key>/', BrandDetailView.as_view()),
+    path('api/brands/<pk>/', BrandDetailView.as_view()),
     path('api/brands/', BrandListView.as_view()),
-    path('api/categories/<url_key>/', CategoryDetailView.as_view()),
+    path('api/categories/<pk>/', CategoryDetailView.as_view()),
     path('api/categories/', CategoryListView.as_view()),
-    path('api/products/<url_key>/', ProductDetailView.as_view()),
+    path('api/products/<pk>/', ProductDetailView.as_view()),
     path('api/products/', ProductListView.as_view()),
     path('api/orders/<pk>/', OrderEditView.as_view()),  # api/orders/{user}/{pk}
     path('api/orders/', OrderListCreateView.as_view()),  # api/orders/{user}
