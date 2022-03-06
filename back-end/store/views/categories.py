@@ -3,12 +3,24 @@ from store.models import Category
 from rest_framework import generics, permissions
 
 
+class CategoryDetailView(generics.RetrieveAPIView):
+    """
+    View that returns a detailed view of a single category.
+
+    Accessible by all.
+    """
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
+    lookup_field = 'url_key'
+    permission_classes = [permissions.AllowAny]
+
+
 class CategoryListView(generics.ListAPIView):
     """
-   View that returns a list of all categories.
+    View that returns a list of all categories.
 
-   Accessible by all.
-   """
+    Accessible by all.
+    """
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     permission_classes = [permissions.AllowAny]

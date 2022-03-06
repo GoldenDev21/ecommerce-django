@@ -2,9 +2,9 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from accounts.views import UserListCreateView, UserRetrieveEditDestroyView, UserRetrieveEditView, UserCreateView, ProfileRetrieveUpdateView
-from store.views.products import ProductEditDeleteView, ProductCreateView, ProductListView
+from store.views.products import ProductEditDeleteView, ProductCreateView, ProductListView, ProductDetailView
 from store.views.brands import BrandCreateView, BrandEditDeleteView, BrandListView, BrandDetailView
-from store.views.categories import CategoryListView, CategoryCreateView, CategoryEditDeleteView
+from store.views.categories import CategoryListView, CategoryCreateView, CategoryEditDeleteView, CategoryDetailView
 from store.views.promo_codes import PromoCodeListCreateView, PromoCodeEditDeleteView
 from store.views.orders import OrderEditView, OrderListCreateView, OrderRetrieveEditDeleteView
 
@@ -16,13 +16,16 @@ urlpatterns = [
     # Public
     path('api/brands/<url_key>/', BrandDetailView.as_view()),
     path('api/brands/', BrandListView.as_view()),
+    path('api/categories/<url_key>/', CategoryDetailView.as_view()),
     path('api/categories/', CategoryListView.as_view()),
+    path('api/products/<url_key>/', ProductDetailView.as_view()),
     path('api/products/', ProductListView.as_view()),
-    path('api/orders/', OrderListCreateView.as_view()),  # api/orders/{user}
     path('api/orders/<pk>/', OrderEditView.as_view()),  # api/orders/{user}/{pk}
-    path('api/users', UserCreateView.as_view()),
-    path('api/users/<pk>', UserRetrieveEditView.as_view()),
-    path('api/users/profile/<pk>', ProfileRetrieveUpdateView.as_view()),
+    path('api/orders/', OrderListCreateView.as_view()),  # api/orders/{user}
+    path('api/users/profile/<pk>/', ProfileRetrieveUpdateView.as_view()),
+    path('api/users/<pk>/', UserRetrieveEditView.as_view()),
+    path('api/users/', UserCreateView.as_view()),
+    # Admin
     # Brands
     path('api/admin/brands/', BrandCreateView.as_view()),
     path('api/admin/brands/<pk>/', BrandEditDeleteView.as_view()),

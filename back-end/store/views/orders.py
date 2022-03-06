@@ -30,7 +30,7 @@ class OrderRetrieveEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
 class OrderEditView(generics.RetrieveUpdateAPIView):
     """
-    View that allows the update of a single order.
+    View that allows the retrieval and update of a single order.
 
     Accessible only by authenticated users.
     """

@@ -3,12 +3,24 @@ from store.models import Product, Variant
 from rest_framework import generics, permissions
 
 
+class ProductDetailView(generics.RetrieveAPIView):
+    """
+    View that returns a single product.
+
+    Accessible by all.
+    """
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+    lookup_field = 'url_key'
+    permission_classes = [permissions.AllowAny]
+
+
 class ProductListView(generics.ListAPIView):
     """
-   View that returns a list of all products.
+    View that returns a list of all products.
 
-   Accessible by all.
-   """
+    Accessible by all.
+    """
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     permission_classes = [permissions.AllowAny]
