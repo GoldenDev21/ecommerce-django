@@ -44,4 +44,4 @@ class BrandDetailView(generics.RetrieveAPIView):
     """
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
-    lookup_field = 'url_key'
+    lookup_field = 'pk'

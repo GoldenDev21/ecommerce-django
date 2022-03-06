@@ -11,7 +11,7 @@ class ProductDetailView(generics.RetrieveAPIView):
     """
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
-    lookup_field = 'url_key'
+    lookup_field = 'pk'
     permission_classes = [permissions.AllowAny]
 
 
