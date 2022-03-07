@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.conf import settings
 
 
 class Brand(models.Model):
@@ -109,7 +110,7 @@ class Order(models.Model):
         (4, 'Delivered'),
         (5, 'Cancelled')
     ]
-    profile = models.ForeignKey('accounts.Profile', related_name='orders', on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICES)
     promo_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE)
 

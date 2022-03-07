@@ -13,6 +13,9 @@ class OrderListCreateView(generics.ListAPIView):
     queryset = Order.objects.all()
     lookup_field = 'pk'
     permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
     # TODO: Only allow users to view their own orders.
 
 

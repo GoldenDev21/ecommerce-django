@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from accounts.serializers import ProfileSerializer
+from accounts.serializers import UserSerializer
 from .models import Brand, Color, Category, Product, Variant, PromoCode, Order, OrderItem
 
 
@@ -50,12 +50,12 @@ class PromoCodeSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer()
+    user = serializers.ReadOnlyField(source='user.id')
     discount_code = PromoCodeSerializer()
 
     class Meta:
         model = Order
-        fields = ['id', 'profile', 'status', 'discount_code']
+        fields = ['id', 'user', 'status', 'discount_code']
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
