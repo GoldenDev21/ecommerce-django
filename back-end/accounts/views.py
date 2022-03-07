@@ -1,6 +1,6 @@
-from .models import CustomUser, Profile
+from .models import User
 from rest_framework import generics, permissions
-from .serializers import UserSerializer, ProfileSerializer
+from .serializers import UserSerializer
 
 
 class UserListCreateView(generics.ListCreateAPIView):
@@ -10,7 +10,7 @@ class UserListCreateView(generics.ListCreateAPIView):
     Accessible by admin.
     """
     serializer_class = UserSerializer
-    queryset = CustomUser.objects.all()
+    queryset = User.objects.all()
     permission_classes = [permissions.IsAdminUser]
 
 
@@ -30,7 +30,7 @@ class UserRetrieveEditView(generics.RetrieveUpdateAPIView):
 
     Accessible by authenticated users.
     """
-    queryset = CustomUser.objects.all()
+    queryset = User.objects.all()
     lookup_field = 'pk'
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -42,20 +42,7 @@ class UserRetrieveEditDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     Accessible by admin.
     """
-    queryset = CustomUser.objects.all()
+    queryset = User.objects.all()
     lookup_field = 'pk'
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
-
-
-class ProfileRetrieveUpdateView(generics.RetrieveUpdateAPIView):
-    """
-    View that allows view & edit of a profile.
-
-    Accessible by authenticated users.
-    """
-    queryset = Profile.objects.all()
-    lookup_field = 'pk'
-    serializer_class = ProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
-

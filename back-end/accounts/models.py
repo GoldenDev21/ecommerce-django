@@ -1,15 +1,15 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.conf import settings
 
 from .managers import CustomUserManager
 
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
+    is_on_mailing_list = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -20,30 +20,12 @@ class CustomUser(AbstractUser):
         return self.email
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    mailing_list = models.BooleanField(null=True)
-
-
-@receiver(post_save, sender=CustomUser)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created and not instance.is_staff:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
-
-
-@receiver(post_save, sender=CustomUser)
-def save_user_profile(sender, instance, **kwargs):
-    if not instance.is_staff:
-        instance.profile.save(user=instance)
-
-
 class Address(models.Model):
     ADDRESS_TYPE_CHOICES = [
         (1, 'Shipping'),
         (2, 'Billing')
     ]
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='addresses')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='addresses')
     primary = models.BooleanField()
     type = models.IntegerField(choices=ADDRESS_TYPE_CHOICES)
     line_1 = models.CharField(max_length=120)

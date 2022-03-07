@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from accounts.views import UserListCreateView, UserRetrieveEditDestroyView, UserRetrieveEditView, UserCreateView, ProfileRetrieveUpdateView
+from accounts.views import UserListCreateView, UserRetrieveEditDestroyView, UserRetrieveEditView, UserCreateView
 from store.views.products import ProductEditDeleteView, ProductCreateView, ProductListView, ProductDetailView
 from store.views.brands import BrandCreateView, BrandEditDeleteView, BrandListView, BrandDetailView
 from store.views.categories import CategoryListView, CategoryCreateView, CategoryEditDeleteView, CategoryDetailView
@@ -20,9 +20,8 @@ urlpatterns = [
     path('api/categories/', CategoryListView.as_view()),
     path('api/products/<pk>/', ProductDetailView.as_view()),
     path('api/products/', ProductListView.as_view()),
-    path('api/orders/<pk>/', OrderEditView.as_view()),  # api/orders/{user}/{pk}
-    path('api/orders/', OrderListCreateView.as_view()),  # api/orders/{user}
-    path('api/users/profile/<pk>/', ProfileRetrieveUpdateView.as_view()),
+    path('api/orders/<pk>/', OrderEditView.as_view()),
+    path('api/orders/', OrderListCreateView.as_view()),
     path('api/users/<pk>/', UserRetrieveEditView.as_view()),
     path('api/users/', UserCreateView.as_view()),
     # Admin
