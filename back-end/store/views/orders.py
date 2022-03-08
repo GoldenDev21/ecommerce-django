@@ -3,7 +3,7 @@ from store.serializers import OrderSerializer
 from store.models import Order
 
 
-class OrderListCreateView(generics.ListAPIView):
+class OrderListCreateView(generics.ListCreateAPIView):
     """
     View that returns a list of orders and allows creation of a new order.
 

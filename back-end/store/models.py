@@ -27,8 +27,8 @@ class Color(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    url_key = models.SlugField(unique=True)
-    description = models.TextField()
+    url_key = models.SlugField(unique=True, blank=True)
+    description = models.TextField(blank=True)
     image = models.ImageField()
 
     def save(self, *args, **kwargs):
@@ -46,7 +46,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2)
     description = models.TextField(max_length=1500)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
-    url_key = models.SlugField(unique=True)
+    url_key = models.SlugField(unique=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -116,6 +116,6 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     quantity = models.IntegerField()
