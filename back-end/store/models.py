@@ -17,14 +17,6 @@ class Brand(models.Model):
         return self.name
 
 
-class Color(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-    abbreviation = models.CharField(max_length=3, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     url_key = models.SlugField(unique=True, blank=True)
@@ -55,37 +47,55 @@ class Product(models.Model):
 
 
 class Variant(models.Model):
-    SIZE_CHOICES = [
-        (1, 'One Size'),
-        (2, 'XS'),
-        (3, 'S'),
-        (4, 'M'),
-        (5, 'L'),
-        (6, 'XL'),
-        (65, '6.5'),
-        (70, '7'),
-        (75, '7.5'),
-        (80, '8'),
-        (85, '8.5'),
-        (90, '9'),
-        (95, '9.5'),
-        (100, '10'),
-        (105, '10.5'),
-        (110, '11'),
-        (115, '11.5'),
+
+    COLOR_CHOICES = [
+        ('BLK', 'Black'),
+        ('CRM', 'Cream'),
+        ('PNK', 'Pink'),
+        ('BRN', 'Brown'),
+        ('GRY', 'Grey'),
+        ('BLU', 'Blue'),
+        ('GRN', 'Green'),
+        ('WHT', 'White'),
+        ('SLV', 'Silver'),
+        ('GLD', 'Gold'),
+        ('ORN', 'Orange'),
+        ('YLL', 'Yellow'),
+        ('RED', 'Red'),
+        ('PRP', 'Purple'),
+        ('MLT', 'Multi')
     ]
 
-    sku = models.CharField(max_length=24, unique=True)
+    SIZE_CHOICES = [
+        ('XXS', 'XXS'),
+        ('XS', 'XS'),
+        ('S', 'S'),
+        ('M', 'M'),
+        ('L', 'L'),
+        ('XL', 'XL'),
+        ('ONE', 'One Size'),
+        ('32', '32'),
+        ('34', '34'),
+        ('36', '36'),
+        ('37', '37'),
+        ('38', '38'),
+        ('39', '39'),
+        ('40', '40'),
+        ('41', '41'),
+        ('42', '42'),
+    ]
+
+    sku = models.CharField(max_length=24, unique=True, blank=True)
     qty_in_stock = models.IntegerField()
-    color = models.ForeignKey(Color, on_delete=models.CASCADE)
-    size = models.IntegerField(choices=SIZE_CHOICES)
-    image = models.ImageField()
+    color = models.CharField(max_length=4, choices=COLOR_CHOICES)
+    size = models.CharField(max_length=4, choices=SIZE_CHOICES)
+    image = models.ImageField(blank=True)
     product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        sku = f'{self.product.id}{self.product.brand.abbreviation}{self.size}{self.color.abbreviation}'
+        sku = f'{self.product.id}{self.product.brand.abbreviation}{self.size}{self.color}'
         self.sku = sku.upper()
-        super(Product, self).save(*args, **kwargs)
+        super(Variant, self).save(*args, **kwargs)
 
 
 class PromoCode(models.Model):
