@@ -33,9 +33,17 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    SEASON_CHOICES = [
+        (1, 'Winter'),
+        (2, 'Spring'),
+        (3, 'Summer'),
+        (4, 'Fall'),
+    ]
     name = models.CharField(max_length=120, unique=True)
     brand = models.ForeignKey(Brand, related_name='products', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=7, decimal_places=2)
+    season = models.PositiveSmallIntegerField(choices=SEASON_CHOICES)
+    year = models.PositiveSmallIntegerField()
     description = models.TextField(max_length=1500)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     url_key = models.SlugField(unique=True, blank=True)
@@ -91,11 +99,6 @@ class Variant(models.Model):
     size = models.CharField(max_length=4, choices=SIZE_CHOICES)
     image = models.ImageField(blank=True)
     product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
-
-    def save(self, *args, **kwargs):
-        sku = f'{self.product.id}{self.product.brand.abbreviation}{self.size}{self.color}'
-        self.sku = sku.upper()
-        super(Variant, self).save(*args, **kwargs)
 
 
 class PromoCode(models.Model):

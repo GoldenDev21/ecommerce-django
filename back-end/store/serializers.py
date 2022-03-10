@@ -26,14 +26,19 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'brand', 'price', 'description', 'category', 'url_key', 'variants']
+        fields = ['id', 'name', 'brand', 'price', 'description', 'category', 'url_key', 'variants', 'season', 'year']
 
     def create(self, validated_data):
         variants = validated_data.pop('variants')
         product = Product.objects.create(**validated_data)
+
+        short_brand = product.brand.abbreviation
+        short_year = str(product.year)
+        print(short_year)
+        short_product_name = product.name[0:3]
         for variant in variants:
-            sku = f'{product.id}{product.brand.abbreviation}{variant["size"]}{variant["color"]}'
-            Variant.objects.create(product=product, sku=sku, **variant)
+            sku = f'{short_brand}{product.season}{short_year[2:]}-{short_product_name}-{variant["size"]}{variant["color"]}'
+            Variant.objects.create(product=product, sku=sku.upper(), **variant)
         return product
 
 
