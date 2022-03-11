@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import Brand, Category, Product, Variant, PromoCode, Order, OrderItem
+from .utils import create_sku
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -32,13 +33,11 @@ class ProductSerializer(serializers.ModelSerializer):
         variants = validated_data.pop('variants')
         product = Product.objects.create(**validated_data)
 
-        short_brand = product.brand.abbreviation
-        short_year = str(product.year)
-        print(short_year)
-        short_product_name = product.name[0:3]
         for variant in variants:
-            sku = f'{short_brand}{product.season}{short_year[2:]}-{short_product_name}-{variant["size"]}{variant["color"]}'
-            Variant.objects.create(product=product, sku=sku.upper(), **variant)
+            sku = create_sku(product, variant)
+            if Variant.objects.filter(sku=sku).exists():
+                raise serializers.ValidationError("SKU must be unique")
+            Variant.objects.create(product=product, sku=sku, **variant)
         return product
 
 
