@@ -44,7 +44,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class PromoCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PromoCode
-        fields = ['id', 'active', 'code', 'discount_percent', 'type']
+        fields = ['id', 'active', 'code', 'discount_percent', 'type', 'expiration_date']
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -62,7 +62,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'status', 'discount_code', 'items']
+        fields = ['id', 'user', 'status', 'discount_code', 'items', 'created_at', 'updated_at']
 
 
 

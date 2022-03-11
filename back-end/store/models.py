@@ -21,7 +21,6 @@ class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     url_key = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True)
-    image = models.ImageField()
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -109,10 +108,11 @@ class PromoCode(models.Model):
         (4, 'New Customer')
     ]
 
-    active = models.BooleanField()
+    active = models.BooleanField(default=True)
     code = models.CharField(max_length=10, unique=True)
     discount_percent = models.IntegerField()
     type = models.IntegerField(choices=PROMO_CODE_TYPES)
+    expiration_date = models.DateTimeField(blank=True, null=True)
 
 
 class Order(models.Model):
@@ -126,6 +126,8 @@ class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICES)
     promo_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class OrderItem(models.Model):
