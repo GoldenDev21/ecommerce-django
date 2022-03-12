@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  web:
+    build: ./back-end
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./back-end/:/usr/src/app/
+    ports:
+      - 1337:8000
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-u=8$$+tw_myv83uv(&6+5vlnmf8^z^+%tpi_zb02@n$$#2x#b*dj
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+    depends_on:
+      - redis
+  redis:
+    image: redis:alpine
+  celery:
+    build: ./back-end
+    command: celery -A core worker -l info
+    volumes:
+      - ./back-end/:/usr/src/app/
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-u=8$$+tw_myv83uv(&6+5vlnmf8^z^+%tpi_zb02@n$$#2x#b*dj
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+    depends_on:
+      - redis
+  celery-beat:
+    build: ./back-end
+    command: celery -A core beat -l info
+    volumes:
+      - ./back-end/:/usr/src/app/
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=dbaa1_i7%*3r9-=z-+_mz4r-!qeed@(-a_r(g@k8jo8y3r27%m
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+    depends_on:
+      - redis
