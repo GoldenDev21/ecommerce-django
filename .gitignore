@@ -1,0 +1,9 @@
+.idea
+back-end/.env
+back-end/accounts/migrations
+back-end/store/migrations
+back-end/accounts/__pycache__
+back-end/store/__pycache__
+back-end/core/__pycache__
+back-end/celerybeat-schedule
+back-end/db.sqlite3
