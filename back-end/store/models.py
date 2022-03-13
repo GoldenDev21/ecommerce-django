@@ -100,6 +100,16 @@ class Variant(models.Model):
     product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
 
 
+class CustomDateTimeField(models.DateTimeField):
+
+    def value_to_string(self, obj):
+        val = self.value_from_object(obj)
+        if val:
+            val.replace(microsecond=0)
+            return val.isoformat()
+        return ""
+
+
 class PromoCode(models.Model):
     PROMO_CODE_TYPES = [
         (1, 'Employee'),
@@ -112,7 +122,7 @@ class PromoCode(models.Model):
     code = models.CharField(max_length=10, unique=True)
     discount_percent = models.IntegerField()
     type = models.IntegerField(choices=PROMO_CODE_TYPES)
-    expiration_date = models.DateTimeField(blank=True, null=True)
+    expiration_date = CustomDateTimeField(blank=True, null=True)
 
 
 class Order(models.Model):
