@@ -57,12 +57,19 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.id')
-    discount_code = PromoCodeSerializer()
     items = OrderItemSerializer(many=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'status', 'discount_code', 'items', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'status', 'created_at', 'items', 'updated_at']
+
+    def create(self, validated_data):
+        items = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+
+        for item in items:
+            OrderItem.objects.create(order=order, **item)
+        return order
 
 
 
