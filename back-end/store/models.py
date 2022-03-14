@@ -134,8 +134,8 @@ class Order(models.Model):
         (5, 'Cancelled')
     ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    status = models.IntegerField(choices=STATUS_CHOICES)
-    promo_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
+    promo_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
