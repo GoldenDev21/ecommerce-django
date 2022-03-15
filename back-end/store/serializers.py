@@ -17,6 +17,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class VariantSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
     class Meta:
         model = Variant
         fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image']
