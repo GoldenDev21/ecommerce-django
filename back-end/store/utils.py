@@ -1,4 +1,5 @@
 import re
+import copy
 
 
 def create_sku(product, variant):
@@ -7,3 +8,12 @@ def create_sku(product, variant):
     short_year = str(product.year)[2:]
     sku = f'{short_brand}{product.season}{short_year}-{short_product_name}-{variant["size"]}{variant["color"]}'
     return sku.upper()
+
+
+def update_instance(instance, fields, validated_data):
+    instance_copy = copy.deepcopy(instance)
+
+    for field in fields:
+        value = validated_data[field]
+        setattr(instance_copy, field, value)
+    return instance_copy
