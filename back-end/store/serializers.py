@@ -27,6 +27,10 @@ class VariantSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     variants = VariantSerializer(many=True)
 
+    def __init__(self, *args, **kwargs):
+        kwargs['partial'] = True
+        super(ProductSerializer, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Product
         fields = ['id', 'name', 'brand', 'price', 'description', 'category', 'url_key', 'variants', 'season', 'year']
