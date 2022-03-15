@@ -96,7 +96,7 @@ class Variant(models.Model):
     qty_in_stock = models.IntegerField()
     color = models.CharField(max_length=4, choices=COLOR_CHOICES)
     size = models.CharField(max_length=4, choices=SIZE_CHOICES)
-    image = models.ImageField(blank=True)
+    image = models.ImageField(blank=True, null=True)
     product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
 
 
