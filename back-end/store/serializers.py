@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from django.db import transaction
 from .models import Brand, Category, Product, Variant, PromoCode, Order, OrderItem
 from .utils import create_sku, update_instance
 
@@ -36,14 +36,14 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'brand', 'price', 'description', 'category', 'url_key', 'variants', 'season', 'year']
 
     def create(self, validated_data):
-        variants = validated_data.pop('variants')
-        product = Product.objects.create(**validated_data)
-
-        for variant in variants:
-            sku = create_sku(product, variant)
-            if Variant.objects.filter(sku=sku).exists():
-                raise serializers.ValidationError("SKU must be unique")
-            Variant.objects.create(product=product, sku=sku, **variant)
+        variants = validated_data.pop('variants', [])
+        with transaction.atomic():
+            product = Product.objects.create(**validated_data)
+            for variant in variants:
+                sku = create_sku(product, variant)
+                if Variant.objects.filter(sku=sku).exists():
+                    raise serializers.ValidationError("SKU must be unique")
+                Variant.objects.create(product=product, sku=sku, **variant)
         return product
 
     def update(self, instance, validated_data):
