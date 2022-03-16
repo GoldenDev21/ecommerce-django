@@ -74,13 +74,12 @@ class Variant(models.Model):
     ]
 
     SIZE_CHOICES = [
-        ('XXS', 'XXS'),
         ('XS', 'XS'),
         ('S', 'S'),
         ('M', 'M'),
         ('L', 'L'),
         ('XL', 'XL'),
-        ('ONE', 'One Size'),
+        ('1', 'One Size'),
         ('32', '32'),
         ('34', '34'),
         ('36', '36'),
