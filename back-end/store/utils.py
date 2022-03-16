@@ -14,6 +14,7 @@ def update_instance(instance, fields, validated_data):
     instance_copy = copy.deepcopy(instance)
 
     for field in fields:
-        value = validated_data[field]
-        setattr(instance_copy, field, value)
+        if field in validated_data:
+            value = validated_data[field]
+            setattr(instance_copy, field, value)
     return instance_copy
