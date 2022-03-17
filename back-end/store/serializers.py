@@ -24,6 +24,13 @@ class VariantSerializer(serializers.ModelSerializer):
         fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image']
 
 
+class VariantReadOnlySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Variant
+        fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image']
+        read_only_fields = ['id', 'color', 'size', 'sku']
+
+
 class ProductSerializer(serializers.ModelSerializer):
     variants = VariantSerializer(many=True)
 
