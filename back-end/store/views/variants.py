@@ -3,7 +3,7 @@ from store.models import  Variant
 from rest_framework import generics, permissions
 
 
-class VariantDeleteView(generics.RetrieveUpdateDestroyAPIView):
+class VariantEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
     """
     View that allows the edit or deletion of a single variant.
     All fields are read-only except for qty_in_stock and image.

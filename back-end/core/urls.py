@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 from accounts.views import UserListCreateView, UserRetrieveEditDestroyView, UserRetrieveEditView, UserCreateView
 from store.views.products import ProductEditDeleteView, ProductCreateView, ProductListView, ProductDetailView
+from store.views.variants import VariantEditDeleteView
 from store.views.brands import BrandCreateView, BrandEditDeleteView, BrandListView, BrandDetailView
 from store.views.categories import CategoryListView, CategoryCreateView, CategoryEditDeleteView, CategoryDetailView
 from store.views.promo_codes import PromoCodeListCreateView, PromoCodeEditDeleteView
@@ -37,6 +38,7 @@ urlpatterns = [
     # Products
     path('api/admin/products/', ProductCreateView.as_view()),
     path('api/admin/products/<pk>/', ProductEditDeleteView.as_view()),
+    path('api/admin/products/variants/<pk>', VariantEditDeleteView.as_view()),
     # Promo Codes
     path('api/admin/promo_codes/', PromoCodeListCreateView.as_view()),
     path('api/admin/promo_codes/<pk>/', PromoCodeEditDeleteView.as_view()),
