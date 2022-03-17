@@ -3,7 +3,7 @@ from store.models import PromoCode
 from rest_framework import generics, permissions
 
 
-class PromoCodeEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
+class PromoCodeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     """
     View that allows the update or deletion of a single promo code.
 

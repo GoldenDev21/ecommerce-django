@@ -1,47 +1,27 @@
 from store.serializers import BrandSerializer
 from store.models import Brand
-from rest_framework import generics, permissions
+from rest_framework import generics
+from store.permissions import IsAdminOrReadOnly
 
 
-class BrandListView(generics.ListAPIView):
+class BrandListCreateView(generics.ListCreateAPIView):
     """
-   View that returns a list of all brands.
+    View that returns a list of all brands for unauthenticated or authenticated users.
 
-   Accessible by all.
-   """
-    serializer_class = BrandSerializer
-    queryset = Brand.objects.all()
-    permission_classes = [permissions.AllowAny]
-
-
-class BrandEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    View that allows the update or deletion of a single brand.
-
-    Accessible only by admin.
+    For admin, allows creation of a new brand.
     """
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
-    # permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly]
 
 
-class BrandCreateView(generics.ListCreateAPIView):
+class BrandRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     """
-    Allows the creation of a brand or lists all brands.
+    View that returns a single brand for unauthenticated or authenticated users.
 
-    Accessible only by admin.
-    """
-    serializer_class = BrandSerializer
-    queryset = Brand.objects.all()
-    # permission_classes = [permissions.IsAdminUser]
-
-
-class BrandDetailView(generics.RetrieveAPIView):
-    """
-    View that returns a single brand.
-
-    Accessible by all.
+    For admin, allows the update or deletion of a brand.
     """
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
     lookup_field = 'pk'
+    permission_classes = [IsAdminOrReadOnly]

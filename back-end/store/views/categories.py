@@ -1,49 +1,27 @@
 from store.serializers import CategorySerializer
 from store.models import Category
-from rest_framework import generics, permissions
+from rest_framework import generics
+from store.permissions import IsAdminOrReadOnly
 
 
-class CategoryDetailView(generics.RetrieveAPIView):
+class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     """
-    View that returns a detailed view of a single category.
+    View that returns a single category for unauthenticated or authenticated users.
 
-    Accessible by all.
-    """
-    serializer_class = CategorySerializer
-    queryset = Category.objects.all()
-    lookup_field = 'pk'
-    permission_classes = [permissions.AllowAny]
-
-
-class CategoryListView(generics.ListAPIView):
-    """
-    View that returns a list of all categories.
-
-    Accessible by all.
-    """
-    serializer_class = CategorySerializer
-    queryset = Category.objects.all()
-    permission_classes = [permissions.AllowAny]
-
-
-class CategoryEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    View that allows the update or deletion of a single category.
-
-    Accessible only by admin.
+    For admin, allows the update or deletion of a category.
     """
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     lookup_field = 'pk'
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly]
 
 
-class CategoryCreateView(generics.ListCreateAPIView):
+class CategoryListCreateView(generics.ListCreateAPIView):
     """
-    Allows the creation of a category or lists all categories.
+    View that returns a list of all categories for unauthenticated or authenticated users.
 
-    Accessible only by admin.
+    For admin, allows creation of a new category.
     """
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly]

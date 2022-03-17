@@ -1,49 +1,27 @@
-from store.serializers import ProductSerializer, VariantSerializer
-from store.models import Product, Variant
-from rest_framework import generics, permissions
+from store.serializers import ProductSerializer
+from store.models import Product
+from rest_framework import generics
+from store.permissions import IsAdminOrReadOnly
 
 
-class ProductDetailView(generics.RetrieveAPIView):
+class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     """
-    View that returns a single product.
+    View that returns a single product for unauthenticated or authenticated users.
 
-    Accessible by all.
-    """
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
-    lookup_field = 'pk'
-    permission_classes = [permissions.AllowAny]
-
-
-class ProductListView(generics.ListAPIView):
-    """
-    View that returns a list of all products.
-
-    Accessible by all.
-    """
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
-    permission_classes = [permissions.AllowAny]
-
-
-class ProductEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    View that allows the update or deletion of a single product.
-
-    Accessible only by admin.
+    For admin, allows the update or deletion of a product.
     """
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     lookup_field = 'pk'
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly]
 
 
-class ProductCreateView(generics.ListCreateAPIView):
+class ProductListCreateView(generics.ListCreateAPIView):
     """
-    Allows the creation of a product or lists all products.
+    View that returns a list of all products for unauthenticated or authenticated users.
 
-    Accessible only by admin.
+    For admin, allows creation of a new product.
     """
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdminOrReadOnly]
