@@ -138,11 +138,20 @@ class Order(models.Model):
         (4, 'Delivered'),
         (5, 'Cancelled')
     ]
+
+    SHIPPING_METHOD_CHOICES = [
+        (1, 'Post'),
+        (2, 'Courier'),
+        (3, 'Express')
+    ]
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     promo_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    shipping_method = models.IntegerField(choices=SHIPPING_METHOD_CHOICES)
+    total = models.DecimalField(decimal_places=2, max_digits=7)
 
     def __str__(self):
         return self.id
