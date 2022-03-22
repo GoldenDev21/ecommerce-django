@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from store.serializers import OrderSerializer
 from store.models import Order
+from store.permissions import IsOwnerOrAdmin
 
 
 class OrderListCreateView(generics.ListCreateAPIView):
@@ -10,35 +11,41 @@ class OrderListCreateView(generics.ListCreateAPIView):
     Accessible by authenticated users.
     """
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
     lookup_field = 'pk'
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-    # TODO: Only allow users to view their own orders.
+
+    def get_queryset(self):
+        """
+        Will return a list of all purchases for the currently authenticated
+        user. Otherwise, if the user is an admin, will return all.
+        :return:
+        """
+        user = self.request.user
+        if user.is_staff:
+            return Order.objects.all()
+        return Order.objects.filter(user=user)
 
 
 class OrderRetrieveEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
     """
     View that allows the update or deletion of a single order.
 
-    Accessible only by admin.
+    Accessible only by the owner of the order or an admin.
     """
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
     lookup_field = 'pk'
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsOwnerOrAdmin]
 
-
-class OrderEditView(generics.RetrieveUpdateAPIView):
-    """
-    View that allows the retrieval and update of a single order.
-
-    Accessible only by authenticated users.
-    """
-    serializer_class = OrderSerializer
-    queryset = Order.objects.all()
-    lookup_field = 'pk'
-    permission_classes = [permissions.IsAuthenticated]
-    # TODO: Only allow users to edit their own orders, unless they are an admin.
+    def get_queryset(self):
+        """
+        Will return a list of all purchases for the currently authenticated
+        user. Otherwise, if the user is an admin, will return all.
+        :return:
+        """
+        user = self.request.user
+        if user.is_staff:
+            return Order.objects.all()
+        return Order.objects.filter(user=user)
