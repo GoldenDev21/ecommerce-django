@@ -14,3 +14,12 @@ class IsAdminOrReadOnly(BasePermission):
             return True
         return False
 
+
+class IsOwnerOrAdmin(BasePermission):
+    """
+    Object-level permission to only allow owners of an object or admins to read or edit the obj.
+    Assumes the model instance has a `user` attribute.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        return request.user.is_staff or obj.user == request.user
