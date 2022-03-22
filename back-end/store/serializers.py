@@ -21,14 +21,8 @@ class VariantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Variant
-        fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image']
-
-
-class VariantReadOnlySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Variant
-        fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image']
-        read_only_fields = ['id', 'color', 'size', 'sku']
+        fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image', "product"]
+        depth = 1
 
 
 class ProductSerializer(serializers.ModelSerializer):

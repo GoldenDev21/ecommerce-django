@@ -1,4 +1,4 @@
-from store.serializers import VariantReadOnlySerializer
+from store.serializers import VariantSerializer
 from store.models import  Variant
 from rest_framework import generics, permissions
 
@@ -10,7 +10,7 @@ class VariantRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     Accessible only by admin.
     """
-    serializer_class = VariantReadOnlySerializer
+    serializer_class = VariantSerializer
     queryset = Variant.objects.all()
     lookup_field = 'pk'
     permission_classes = [permissions.IsAdminUser]
