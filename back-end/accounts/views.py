@@ -14,28 +14,6 @@ class UserListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAdminUser]
 
 
-class UserCreateView(generics.CreateAPIView):
-    """
-    View that allows creation of a new user.
-
-    Accessible by all.
-    """
-    serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]
-
-
-class UserRetrieveEditView(generics.RetrieveUpdateAPIView):
-    """
-    View that allows retrieval and edit of a user.
-
-    Accessible by authenticated users.
-    """
-    queryset = User.objects.all()
-    lookup_field = 'pk'
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
 class UserRetrieveEditDestroyView(generics.RetrieveUpdateDestroyAPIView):
     """
     View that allows edit and deletion of a user.
