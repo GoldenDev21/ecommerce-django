@@ -47,6 +47,9 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     url_key = models.SlugField(unique=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
     def save(self, *args, **kwargs):
         if not self.id:
             self.url_key = slugify(self.name)
@@ -123,6 +126,9 @@ class PromoCode(models.Model):
     type = models.IntegerField(choices=PROMO_CODE_TYPES)
     expiration_date = CustomDateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return self.code
+
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -137,6 +143,9 @@ class Order(models.Model):
     promo_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.id
 
 
 class OrderItem(models.Model):
