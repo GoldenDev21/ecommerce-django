@@ -9,6 +9,8 @@ from .managers import CustomUserManager
 class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
+    given_name = models.CharField(max_length=40)
+    family_name = models.CharField(max_length=60)
     is_on_mailing_list = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
