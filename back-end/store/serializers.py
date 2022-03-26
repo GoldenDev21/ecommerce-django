@@ -25,7 +25,7 @@ class BrandSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'url_key', 'description', 'image']
+        fields = ['id', 'name', 'description']
 
 
 class VariantSerializer(serializers.ModelSerializer):

@@ -13,13 +13,7 @@ class Brand(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    url_key = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.url_key = slugify(self.name)
-        super(Category, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
