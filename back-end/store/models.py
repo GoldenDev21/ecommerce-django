@@ -5,13 +5,7 @@ from django.conf import settings
 
 class Brand(models.Model):
     name = models.CharField(max_length=40, unique=True)
-    abbreviation = models.CharField(max_length=4, unique=True)
-    url_key = models.SlugField(unique=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.url_key = slugify(self.name)
-        super(Brand, self).save(*args, **kwargs)
+    abbreviation = models.CharField(max_length=3, unique=True)
 
     def __str__(self):
         return self.name

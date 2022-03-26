@@ -9,6 +9,18 @@ class BrandSerializer(serializers.ModelSerializer):
         model = Brand
         fields = ['id', 'name', 'abbreviation']
 
+    def create(self, validated_data):
+        abbreviation = validated_data.pop("abbreviation")
+        brand = Brand.objects.create(abbreviation=abbreviation.upper(), **validated_data)
+        return brand
+
+    def update(self, instance, validated_data):
+        brand = update_instance(instance, ['name'], validated_data)
+        if "abbreviation" in validated_data:
+            brand.abbreviation = validated_data['abbreviation'].upper()
+        brand.save()
+        return brand
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
