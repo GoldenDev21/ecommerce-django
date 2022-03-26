@@ -10,7 +10,7 @@ class AddressSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    addresses = AddressSerializer(many=True)
+    addresses = AddressSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
@@ -24,5 +24,5 @@ class UserSerializer(serializers.ModelSerializer):
         user = super().update(instance, validated_data)
         if 'password' in validated_data:
             user.set_password(validated_data['password'])
-            user.save()
+        user.save()
         return user
