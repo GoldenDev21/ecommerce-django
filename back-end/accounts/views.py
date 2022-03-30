@@ -1,6 +1,7 @@
 from .models import User
 from rest_framework import generics, permissions
-from .serializers import UserSerializer
+from .serializers import UserSerializer, AddressSerializer
+from store.permissions import IsOwnerOrAdmin
 
 
 class UserListCreateView(generics.ListCreateAPIView):
@@ -12,6 +13,14 @@ class UserListCreateView(generics.ListCreateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [permissions.IsAdminUser]
+
+
+class UserCreateView(generics.CreateAPIView):
+    """
+    View that allows an anonymous user to create an account.
+    """
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
 
 
 class UserRetrieveEditDestroyView(generics.RetrieveUpdateDestroyAPIView):
