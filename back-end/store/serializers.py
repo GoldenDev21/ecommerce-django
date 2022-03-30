@@ -33,8 +33,7 @@ class VariantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Variant
-        fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image', "product"]
-        depth = 1
+        fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image']
 
 
 class ProductSerializer(serializers.ModelSerializer):
