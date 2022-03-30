@@ -116,5 +116,13 @@ class OrderSerializer(serializers.ModelSerializer):
             OrderItem.objects.create(order=order, **item)
         return order
 
+    def update(self, instance, validated_data):
+        if 'items' in validated_data:
+            raise serializers.ValidationError('Order items can only be updated via the order-items endpoint.')
+        else:
+            order = update_instance(instance, ['status'], validated_data)
+            order.save()
+        return order
+
 
 

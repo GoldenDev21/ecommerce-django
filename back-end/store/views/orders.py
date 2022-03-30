@@ -1,5 +1,5 @@
 from rest_framework import generics, permissions
-from store.serializers import OrderSerializer
+from store.serializers import OrderSerializer, OrderItemSerializer
 from store.models import Order
 from store.permissions import IsOwnerOrAdmin
 
@@ -49,3 +49,14 @@ class OrderRetrieveEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
         if user.is_staff:
             return Order.objects.all()
         return Order.objects.filter(user=user)
+
+
+class OrderItemRetrieveEditDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    View that allows the update or deletion of a single order item.
+
+    Accessible only by admins.
+    """
+    serializer_class = OrderItemSerializer
+    lookup_field = 'pk'
+    permission_classes = [permissions.IsAdminUser]

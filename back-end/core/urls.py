@@ -6,7 +6,7 @@ from store.views.variants import VariantRetrieveUpdateDestroyView
 from store.views.brands import BrandListCreateView, BrandRetrieveUpdateDestroyView
 from store.views.categories import CategoryListCreateView, CategoryRetrieveUpdateDestroyView
 from store.views.promo_codes import PromoCodeListCreateView, PromoCodeRetrieveUpdateDestroyView
-from store.views.orders import OrderListCreateView, OrderRetrieveEditDeleteView
+from store.views.orders import OrderListCreateView, OrderRetrieveEditDeleteView, OrderItemRetrieveEditDestroyAPIView
 
 router = routers.DefaultRouter()
 
@@ -19,8 +19,9 @@ urlpatterns = [
     path('api/products/variants/<pk>', VariantRetrieveUpdateDestroyView.as_view()),
     path('api/products/<pk>/', ProductRetrieveUpdateDestroyView.as_view()),
     path('api/products/', ProductListCreateView.as_view()),
-    path('api/promo_codes/<pk>/', PromoCodeRetrieveUpdateDestroyView.as_view()),
-    path('api/promo_codes/', PromoCodeListCreateView.as_view()),
+    path('api/promo-codes/<pk>/', PromoCodeRetrieveUpdateDestroyView.as_view()),
+    path('api/promo-codes/', PromoCodeListCreateView.as_view()),
+    path('api/orders/order-items/<pk>', OrderItemRetrieveEditDestroyAPIView.as_view()),
     path('api/orders/<pk>/', OrderRetrieveEditDeleteView.as_view()),
     path('api/orders/', OrderListCreateView.as_view()),
     path('api/users/<pk>/', UserRetrieveEditDestroyView.as_view()),
