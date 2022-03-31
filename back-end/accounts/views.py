@@ -1,4 +1,4 @@
-from .models import User
+from .models import User, Address
 from rest_framework import generics, permissions
 from .serializers import UserSerializer, AddressSerializer
 from store.permissions import IsOwnerOrAdmin
@@ -33,3 +33,27 @@ class UserRetrieveEditDestroyView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
+
+
+class AddressRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    View that allows edit and deletion of an address.
+
+    Accessible by authenticated users if they are the user associated with the address
+    or an admin.
+    """
+    queryset = Address.objects.all()
+    lookup_field = 'pk'
+    serializer_class = AddressSerializer
+    permission_classes = [IsOwnerOrAdmin]
+
+
+class AddressListView(generics.ListCreateAPIView):
+    """
+    View that allows returns a list of all addresses and allows the creation of a new one.
+
+    Accessible by authenticated users.
+    """
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+    permission_classes = [permissions.IsAuthenticated]
