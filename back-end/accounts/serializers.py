@@ -6,7 +6,20 @@ from django.contrib.auth.hashers import make_password
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
-        fields = ['id', 'primary', 'type', 'line_1', 'line_2', 'city', 'state', 'zip']
+        fields = ['id', 'user', 'primary', 'line_1', 'line_2', 'city', 'state', 'zip', 'phone']
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        """
+        Will return a list of all addresses for the currently authenticated
+        user. Otherwise, if the user is an admin, will return all.
+        """
+        user = self.request.user
+        if user.is_staff:
+            return Address.objects.all()
+        return Address.objects.filter(user=user)
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -23,15 +23,11 @@ class User(AbstractUser):
 
 
 class Address(models.Model):
-    ADDRESS_TYPE_CHOICES = [
-        (1, 'Shipping'),
-        (2, 'Billing')
-    ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='addresses')
     primary = models.BooleanField()
-    type = models.IntegerField(choices=ADDRESS_TYPE_CHOICES)
     line_1 = models.CharField(max_length=120)
-    line_2 = models.CharField(max_length=60)
+    line_2 = models.CharField(max_length=60, null=True)
     city = models.CharField(max_length=60)
     state = models.CharField(max_length=3)
     zip = models.CharField(max_length=15)
+    phone = models.CharField(max_length=13)
