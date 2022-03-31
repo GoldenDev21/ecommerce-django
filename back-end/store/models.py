@@ -139,8 +139,8 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     shipping_method = models.IntegerField(choices=SHIPPING_METHOD_CHOICES)
-    subtotal = models.DecimalField(decimal_places=2, max_digits=7)
-    total = models.DecimalField(decimal_places=2, max_digits=7)
+    subtotal = models.DecimalField(decimal_places=2, max_digits=7, null=True)
+    total = models.DecimalField(decimal_places=2, max_digits=7, null=True)
     shipping_address = models.TextField()
     billing_address = models.TextField()
 
