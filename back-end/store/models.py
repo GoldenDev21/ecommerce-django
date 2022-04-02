@@ -20,16 +20,16 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    SEASON_CHOICES = [
-        (1, 'Winter'),
-        (2, 'Spring'),
-        (3, 'Summer'),
-        (4, 'Fall'),
-    ]
+    class Season(models.IntegerChoices):
+        WINTER = 1,
+        SPRING = 2,
+        SUMMER = 3,
+        FALL = 4
+
     name = models.CharField(max_length=120, unique=True)
     brand = models.ForeignKey(Brand, related_name='products', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=7, decimal_places=2)
-    season = models.PositiveSmallIntegerField(choices=SEASON_CHOICES)
+    season = models.PositiveSmallIntegerField(choices=Season.choices)
     year = models.PositiveSmallIntegerField()
     description = models.TextField(max_length=1500)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
@@ -45,24 +45,24 @@ class Product(models.Model):
 
 
 class Variant(models.Model):
-
-    COLOR_CHOICES = [
-        ('BLK', 'Black'),
-        ('CRM', 'Cream'),
-        ('PNK', 'Pink'),
-        ('BRN', 'Brown'),
-        ('GRY', 'Grey'),
-        ('BLU', 'Blue'),
-        ('GRN', 'Green'),
-        ('WHT', 'White'),
-        ('SLV', 'Silver'),
-        ('GLD', 'Gold'),
-        ('ORN', 'Orange'),
-        ('YLL', 'Yellow'),
-        ('RED', 'Red'),
-        ('PRP', 'Purple'),
-        ('MLT', 'Multi')
-    ]
+    class Color(models.TextChoices):
+        BLACK = 'BLK',
+        BLUE = 'BLU',
+        BEIGE = 'BEI',
+        BROWN = 'BRN',
+        GOLD = 'GLD',
+        GREEN = 'GRN',
+        GREY = 'GRY',
+        IVORY = 'IVR',
+        MULTI_COLORED = 'MLT',
+        ORANGE = 'ORN',
+        PINK = 'PNK',
+        PURPLE = 'PRP',
+        RED = 'RED',
+        SILVER = 'SLV',
+        TURQUOISE = 'TRQ',
+        WHITE = 'WHT'
+        YELLOW = 'YLL'
 
     SIZE_CHOICES = [
         ('XS', 'XS'),
@@ -84,7 +84,7 @@ class Variant(models.Model):
 
     sku = models.CharField(max_length=24, unique=True, blank=True)
     qty_in_stock = models.IntegerField()
-    color = models.CharField(max_length=4, choices=COLOR_CHOICES)
+    color = models.CharField(max_length=4, choices=Color.choices)
     size = models.CharField(max_length=4, choices=SIZE_CHOICES)
     image = models.ImageField(blank=True, null=True)
     product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
@@ -101,17 +101,16 @@ class CustomDateTimeField(models.DateTimeField):
 
 
 class PromoCode(models.Model):
-    PROMO_CODE_TYPES = [
-        (1, 'Employee'),
-        (2, 'Referral'),
-        (3, 'Offer'),
-        (4, 'New Customer')
-    ]
+    class PromoCodeType(models.IntegerChoices):
+        EMPLOYEE = 1,
+        REFERRAL = 2,
+        OFFER = 3,
+        NEW_CUSTOMER = 4
 
     active = models.BooleanField(default=True)
     code = models.CharField(max_length=10, unique=True)
     discount_percent = models.IntegerField()
-    type = models.IntegerField(choices=PROMO_CODE_TYPES)
+    type = models.IntegerField(choices=PromoCodeType.choices)
     expiration_date = CustomDateTimeField(blank=True, null=True)
 
     def __str__(self):
@@ -119,26 +118,24 @@ class PromoCode(models.Model):
 
 
 class Order(models.Model):
-    STATUS_CHOICES = [
-        (1, 'Waiting for payment'),
-        (2, 'Paid'),
-        (3, 'Shipped'),
-        (4, 'Delivered'),
-        (5, 'Cancelled')
-    ]
+    class Status(models.IntegerChoices):
+        AWAITING_PAYMENT = 1,
+        PAYMENT_RECEIVED = 2,
+        SHIPPED = 3,
+        DELIVERED = 4,
+        CANCELLED = 5
 
-    SHIPPING_METHOD_CHOICES = [
-        (1, 'Post'),
-        (2, 'Courier'),
-        (3, 'Express')
-    ]
+    class ShippingMethod(models.IntegerChoices):
+        POST = 1,
+        COURIER = 2,
+        EXPRESS = 3
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
+    status = models.IntegerField(choices=Status.choices, default=Status.AWAITING_PAYMENT)
     promo_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    shipping_method = models.IntegerField(choices=SHIPPING_METHOD_CHOICES)
+    shipping_method = models.IntegerField(choices=ShippingMethod.choices)
     subtotal = models.DecimalField(decimal_places=2, max_digits=7, null=True)
     total = models.DecimalField(decimal_places=2, max_digits=7, null=True)
     shipping_address = models.TextField()
