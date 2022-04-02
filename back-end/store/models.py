@@ -147,6 +147,9 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
+    variant = models.ForeignKey(Variant, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField()
-    price = models.DecimalField(decimal_places=2, max_digits=7)
+    price = models.DecimalField(decimal_places=2, max_digits=7, null=True)
+    name = models.CharField(max_length=255, default="")
+    brand = models.CharField(max_length=255, default="")
+    sku = models.CharField(max_length=255, default="")
