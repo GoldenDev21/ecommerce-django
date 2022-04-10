@@ -117,6 +117,12 @@ class PromoCode(models.Model):
         return self.code
 
 
+class ShippingMethodEnum(models.IntegerChoices):
+    POST = 1,
+    COURIER = 2,
+    EXPRESS = 3
+
+
 class Order(models.Model):
     class Status(models.IntegerChoices):
         AWAITING_PAYMENT = 1,
@@ -125,21 +131,17 @@ class Order(models.Model):
         DELIVERED = 4,
         CANCELLED = 5
 
-    class ShippingMethod(models.IntegerChoices):
-        POST = 1,
-        COURIER = 2,
-        EXPRESS = 3
-
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     status = models.IntegerField(choices=Status.choices, default=Status.AWAITING_PAYMENT)
-    promo_code = models.ForeignKey(PromoCode, on_delete=models.CASCADE, blank=True, null=True)
+    promo_code = models.ForeignKey(PromoCode, on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    shipping_method = models.IntegerField(choices=ShippingMethod.choices)
+    shipping_method = models.IntegerField(choices=ShippingMethodEnum.choices)
     subtotal = models.DecimalField(decimal_places=2, max_digits=7, null=True)
     total = models.DecimalField(decimal_places=2, max_digits=7, null=True)
     shipping_address = models.TextField()
     billing_address = models.TextField()
+    shipping_total = models.DecimalField(decimal_places=2, max_digits=7, null=True)
 
     def __str__(self):
         return self.id
