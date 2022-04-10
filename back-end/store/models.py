@@ -153,3 +153,4 @@ class OrderItem(models.Model):
     name = models.CharField(max_length=255, default="")
     brand = models.CharField(max_length=255, default="")
     sku = models.CharField(max_length=255, default="")
+    image = models.ImageField(blank=True, null=True)
