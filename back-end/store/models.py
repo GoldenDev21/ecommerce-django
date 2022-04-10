@@ -32,15 +32,16 @@ class Product(models.Model):
     season = models.PositiveSmallIntegerField(choices=Season.choices)
     year = models.PositiveSmallIntegerField()
     description = models.TextField(max_length=1500)
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, null=True)
     url_key = models.SlugField(unique=True, blank=True)
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            self.url_key = slugify(self.name)
+        slugified_name = slugify(self.name)
+        if self.url_key != slugified_name:
+            self.url_key = slugified_name
         super(Product, self).save(*args, **kwargs)
 
 
