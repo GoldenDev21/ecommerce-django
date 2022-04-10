@@ -102,17 +102,53 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.email')
     items = OrderItemSerializer(many=True)
+    subtotal = serializers.ReadOnlyField()
+    total = serializers.ReadOnlyField()
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'status', 'created_at', 'items', 'updated_at', "shipping_method"]
+        fields = [
+            'id',
+            'user',
+            'status',
+            'created_at',
+            'items',
+            'updated_at',
+            "shipping_method",
+            'subtotal',
+            'total',
+            'shipping_total',
+            "billing_address",
+            "shipping_address"
+        ]
 
     def create(self, validated_data):
-        items = validated_data.pop('items')
-        order = Order.objects.create(**validated_data)
+        with transaction.atomic():
+            items = validated_data.pop('items')
+            order = Order.objects.create(**validated_data)
 
-        for item in items:
-            OrderItem.objects.create(order=order, **item)
+            prices = []
+            for item in items:
+                variant_pk = item.get('variant').pk
+                variant = Variant.objects.filter(pk=variant_pk)[0]
+                product = Product.objects.filter(pk=variant.product_id)[0]
+                OrderItem.objects.create(
+                    order=order,
+                    price=product.price,
+                    name=product.name,
+                    image=variant.image,
+                    brand=product.brand.name,
+                    sku=variant.sku,
+                    **item
+                )
+                prices.append(product.price*item.get('quantity'))
+            subtotal = sum(prices)
+            shipping_total = get_shipping_price(order.shipping_method)
+
+            order.subtotal = subtotal
+            order.shipping_total = shipping_total
+            order.total = subtotal + decimal.Decimal(shipping_total)
+            order.save()
         return order
 
     def update(self, instance, validated_data):
