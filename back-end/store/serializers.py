@@ -1,7 +1,9 @@
+import decimal
+
 from rest_framework import serializers
 from django.db import transaction
 from .models import Brand, Category, Product, Variant, PromoCode, Order, OrderItem
-from .utils import create_sku, update_instance
+from .utils import create_sku, update_instance, get_shipping_price
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -34,6 +36,7 @@ class VariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variant
         fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image']
+        read_only_fields = ['sku', 'color', 'size']
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -59,29 +62,14 @@ class ProductSerializer(serializers.ModelSerializer):
         return product
 
     def update(self, instance, validated_data):
-        variants = validated_data.pop('variants', [])
-        new_variants = [variant for variant in variants if variant['id'] is None]
-        updated_variants = [variant for variant in variants if variant['id'] is not None]
-
-        with transaction.atomic():
+        if 'variants' in validated_data:
+            raise serializers.ValidationError('Variants can only be updated via the variants endpoint.')
+        else:
             product = update_instance(
                 instance,
                 ['name', 'brand', 'price', 'description', 'category', 'season', 'year'],
                 validated_data)
             product.save()
-
-            for variant in new_variants:
-                sku = create_sku(product, variant)
-                Variant.objects.create(product=product, sku=sku, **variant)
-
-            for variant in updated_variants:
-                variant_instance = Variant.objects.filter(pk=variant['id']).first()
-                if variant_instance:
-                    new_variant = update_instance(variant_instance, ['image', 'qty_in_stock'], variant)
-                    if variant.get('size') or variant.get('color'):
-                        raise serializers.ValidationError('Cannot update size or color on an existing variant.')
-                    new_variant.save()
-
         return product
 
 
@@ -92,11 +80,15 @@ class PromoCodeSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    variant = VariantSerializer()
+    price = serializers.DecimalField(required=False, max_digits=7, decimal_places=2)
+    name = serializers.CharField(required=False)
+    brand = serializers.CharField(required=False)
+    sku = serializers.CharField(required=False)
+    image = serializers.ImageField(required=False)
 
     class Meta:
         model = OrderItem
-        fields = ['id', 'variant', 'quantity']
+        fields = ['id', 'quantity', 'price', 'name', 'brand', 'sku', 'variant', "image"]
 
 
 class OrderSerializer(serializers.ModelSerializer):
