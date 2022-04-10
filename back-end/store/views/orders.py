@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions
 from store.serializers import OrderSerializer, OrderItemSerializer
-from store.models import Order
+from store.models import Order, OrderItem
 from store.permissions import IsOwnerOrAdmin
 
 
@@ -59,4 +59,5 @@ class OrderItemRetrieveEditDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     """
     serializer_class = OrderItemSerializer
     lookup_field = 'pk'
+    queryset = OrderItem.objects.all()
     permission_classes = [permissions.IsAdminUser]
