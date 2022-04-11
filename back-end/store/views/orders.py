@@ -10,8 +10,9 @@ class OrderListCreateView(generics.ListCreateAPIView):
 
     Accessible by authenticated users.
     """
+
     serializer_class = OrderSerializer
-    lookup_field = 'pk'
+    lookup_field = "pk"
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -35,8 +36,9 @@ class OrderRetrieveEditDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
     Accessible only by the owner of the order or an admin.
     """
+
     serializer_class = OrderSerializer
-    lookup_field = 'pk'
+    lookup_field = "pk"
     permission_classes = [IsOwnerOrAdmin]
 
     def get_queryset(self):
@@ -57,7 +59,8 @@ class OrderItemRetrieveEditDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 
     Accessible only by admins.
     """
+
     serializer_class = OrderItemSerializer
-    lookup_field = 'pk'
+    lookup_field = "pk"
     queryset = OrderItem.objects.all()
     permission_classes = [permissions.IsAdminUser]

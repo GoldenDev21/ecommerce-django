@@ -9,9 +9,10 @@ class PromoCodeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     Accessible only by admin.
     """
+
     serializer_class = PromoCodeSerializer
     queryset = PromoCode.objects.all()
-    lookup_field = 'pk'
+    lookup_field = "pk"
     permission_classes = [permissions.IsAdminUser]
 
 
@@ -21,6 +22,7 @@ class PromoCodeListCreateView(generics.ListCreateAPIView):
 
     Accessible only by admin.
     """
+
     serializer_class = PromoCodeSerializer
     queryset = PromoCode.objects.all()
     permission_classes = [permissions.IsAdminUser]

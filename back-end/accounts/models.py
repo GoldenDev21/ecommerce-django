@@ -8,12 +8,12 @@ from .managers import CustomUserManager
 
 class User(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_("email address"), unique=True)
     given_name = models.CharField(max_length=40)
     family_name = models.CharField(max_length=60)
     is_on_mailing_list = models.BooleanField(default=False)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
@@ -23,7 +23,9 @@ class User(AbstractUser):
 
 
 class Address(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='addresses')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="addresses"
+    )
     primary = models.BooleanField()
     line_1 = models.CharField(max_length=120)
     line_2 = models.CharField(max_length=60, null=True)

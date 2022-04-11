@@ -10,6 +10,7 @@ class UserListCreateView(generics.ListCreateAPIView):
 
     Accessible by admin.
     """
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [permissions.IsAdminUser]
@@ -19,6 +20,7 @@ class UserCreateView(generics.CreateAPIView):
     """
     View that allows an anonymous user to create an account.
     """
+
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 
@@ -29,8 +31,9 @@ class UserRetrieveEditDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     Accessible by admin.
     """
+
     queryset = User.objects.all()
-    lookup_field = 'pk'
+    lookup_field = "pk"
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
 
@@ -42,8 +45,9 @@ class AddressRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     Accessible by authenticated users if they are the user associated with the address
     or an admin.
     """
+
     queryset = Address.objects.all()
-    lookup_field = 'pk'
+    lookup_field = "pk"
     serializer_class = AddressSerializer
     permission_classes = [IsOwnerOrAdmin]
 
@@ -54,6 +58,7 @@ class AddressListView(generics.ListCreateAPIView):
 
     Accessible by authenticated users.
     """
+
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
     permission_classes = [permissions.IsAuthenticated]

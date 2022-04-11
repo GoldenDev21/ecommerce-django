@@ -10,9 +10,10 @@ class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     For admin, allows the update or deletion of a product.
     """
+
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
-    lookup_field = 'pk'
+    lookup_field = "pk"
     permission_classes = [IsAdminOrReadOnly]
 
 
@@ -22,6 +23,7 @@ class ProductListCreateView(generics.ListCreateAPIView):
 
     For admin, allows creation of a new product.
     """
+
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     permission_classes = [IsAdminOrReadOnly]

@@ -10,6 +10,7 @@ class BrandListCreateView(generics.ListCreateAPIView):
 
     For admin, allows creation of a new brand.
     """
+
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
     permission_classes = [IsAdminOrReadOnly]
@@ -21,7 +22,8 @@ class BrandRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     For admin, allows the update or deletion of a brand.
     """
+
     serializer_class = BrandSerializer
     queryset = Brand.objects.all()
-    lookup_field = 'pk'
+    lookup_field = "pk"
     permission_classes = [IsAdminOrReadOnly]

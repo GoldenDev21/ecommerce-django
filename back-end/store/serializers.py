@@ -9,17 +9,19 @@ from .utils import create_sku, update_instance, get_shipping_price
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ['id', 'name', 'abbreviation']
+        fields = ["id", "name", "abbreviation"]
 
     def create(self, validated_data):
         abbreviation = validated_data.pop("abbreviation")
-        brand = Brand.objects.create(abbreviation=abbreviation.upper(), **validated_data)
+        brand = Brand.objects.create(
+            abbreviation=abbreviation.upper(), **validated_data
+        )
         return brand
 
     def update(self, instance, validated_data):
-        brand = update_instance(instance, ['name'], validated_data)
+        brand = update_instance(instance, ["name"], validated_data)
         if "abbreviation" in validated_data:
-            brand.abbreviation = validated_data['abbreviation'].upper()
+            brand.abbreviation = validated_data["abbreviation"].upper()
         brand.save()
         return brand
 
@@ -27,7 +29,7 @@ class BrandSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'description']
+        fields = ["id", "name", "description"]
 
 
 class VariantSerializer(serializers.ModelSerializer):
@@ -35,23 +37,34 @@ class VariantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Variant
-        fields = ['id', 'sku', 'qty_in_stock', 'color', 'size', 'image']
-        read_only_fields = ['sku', 'color', 'size']
+        fields = ["id", "sku", "qty_in_stock", "color", "size", "image"]
+        read_only_fields = ["sku", "color", "size"]
 
 
 class ProductSerializer(serializers.ModelSerializer):
     variants = VariantSerializer(many=True)
 
     def __init__(self, *args, **kwargs):
-        kwargs['partial'] = True
+        kwargs["partial"] = True
         super(ProductSerializer, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'brand', 'price', 'description', 'category', 'url_key', 'variants', 'season', 'year']
+        fields = [
+            "id",
+            "name",
+            "brand",
+            "price",
+            "description",
+            "category",
+            "url_key",
+            "variants",
+            "season",
+            "year",
+        ]
 
     def create(self, validated_data):
-        variants = validated_data.pop('variants', [])
+        variants = validated_data.pop("variants", [])
         with transaction.atomic():
             product = Product.objects.create(**validated_data)
             for variant in variants:
@@ -62,13 +75,16 @@ class ProductSerializer(serializers.ModelSerializer):
         return product
 
     def update(self, instance, validated_data):
-        if 'variants' in validated_data:
-            raise serializers.ValidationError('Variants can only be updated via the variants endpoint.')
+        if "variants" in validated_data:
+            raise serializers.ValidationError(
+                "Variants can only be updated via the variants endpoint."
+            )
         else:
             product = update_instance(
                 instance,
-                ['name', 'brand', 'price', 'description', 'category', 'season', 'year'],
-                validated_data)
+                ["name", "brand", "price", "description", "category", "season", "year"],
+                validated_data,
+            )
             product.save()
         return product
 
@@ -76,7 +92,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class PromoCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PromoCode
-        fields = ['id', 'active', 'code', 'discount_percent', 'type', 'expiration_date']
+        fields = ["id", "active", "code", "discount_percent", "type", "expiration_date"]
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -88,7 +104,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['id', 'quantity', 'price', 'name', 'brand', 'sku', 'variant', "image"]
+        fields = ["id", "quantity", "price", "name", "brand", "sku", "variant", "image"]
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -147,12 +163,11 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
     def update(self, instance, validated_data):
-        if 'items' in validated_data:
-            raise serializers.ValidationError('Order items can only be updated via the order-items endpoint.')
+        if "items" in validated_data:
+            raise serializers.ValidationError(
+                "Order items can only be updated via the order-items endpoint."
+            )
         else:
-            order = update_instance(instance, ['status'], validated_data)
+            order = update_instance(instance, ["status"], validated_data)
             order.save()
         return order
-
-
-

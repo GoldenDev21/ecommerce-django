@@ -10,9 +10,10 @@ class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 
     For admin, allows the update or deletion of a category.
     """
+
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
-    lookup_field = 'pk'
+    lookup_field = "pk"
     permission_classes = [IsAdminOrReadOnly]
 
 
@@ -22,6 +23,7 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 
     For admin, allows creation of a new category.
     """
+
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     permission_classes = [IsAdminOrReadOnly]

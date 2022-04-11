@@ -27,12 +27,14 @@ class Product(models.Model):
         FALL = 4
 
     name = models.CharField(max_length=120, unique=True)
-    brand = models.ForeignKey(Brand, related_name='products', on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, related_name="products", on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     season = models.PositiveSmallIntegerField(choices=Season.choices)
     year = models.PositiveSmallIntegerField()
     description = models.TextField(max_length=1500)
-    category = models.ForeignKey(Category, related_name='products', on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(
+        Category, related_name="products", on_delete=models.SET_NULL, null=True
+    )
     url_key = models.SlugField(unique=True, blank=True)
 
     def __str__(self):
@@ -66,21 +68,21 @@ class Variant(models.Model):
         YELLOW = 'YLL'
 
     SIZE_CHOICES = [
-        ('XS', 'XS'),
-        ('S', 'S'),
-        ('M', 'M'),
-        ('L', 'L'),
-        ('XL', 'XL'),
-        ('1', 'One Size'),
-        ('32', '32'),
-        ('34', '34'),
-        ('36', '36'),
-        ('37', '37'),
-        ('38', '38'),
-        ('39', '39'),
-        ('40', '40'),
-        ('41', '41'),
-        ('42', '42'),
+        ("XS", "XS"),
+        ("S", "S"),
+        ("M", "M"),
+        ("L", "L"),
+        ("XL", "XL"),
+        ("1", "One Size"),
+        ("32", "32"),
+        ("34", "34"),
+        ("36", "36"),
+        ("37", "37"),
+        ("38", "38"),
+        ("39", "39"),
+        ("40", "40"),
+        ("41", "41"),
+        ("42", "42"),
     ]
 
     sku = models.CharField(max_length=24, unique=True, blank=True)
@@ -88,7 +90,9 @@ class Variant(models.Model):
     color = models.CharField(max_length=4, choices=Color.choices)
     size = models.CharField(max_length=4, choices=SIZE_CHOICES)
     image = models.ImageField(blank=True, null=True)
-    product = models.ForeignKey(Product, related_name='variants', on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, related_name="variants", on_delete=models.CASCADE
+    )
 
 
 class CustomDateTimeField(models.DateTimeField):
@@ -133,8 +137,12 @@ class Order(models.Model):
         CANCELLED = 5
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    status = models.IntegerField(choices=Status.choices, default=Status.AWAITING_PAYMENT)
-    promo_code = models.ForeignKey(PromoCode, on_delete=models.SET_NULL, blank=True, null=True)
+    status = models.IntegerField(
+        choices=Status.choices, default=Status.AWAITING_PAYMENT
+    )
+    promo_code = models.ForeignKey(
+        PromoCode, on_delete=models.SET_NULL, blank=True, null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     shipping_method = models.IntegerField(choices=ShippingMethodEnum.choices)
@@ -149,7 +157,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     variant = models.ForeignKey(Variant, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField()
     price = models.DecimalField(decimal_places=2, max_digits=7, null=True)
