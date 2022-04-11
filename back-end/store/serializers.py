@@ -92,38 +92,39 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.email')
+    user = serializers.ReadOnlyField(source="user.email")
     items = OrderItemSerializer(many=True)
-    subtotal = serializers.ReadOnlyField()
-    total = serializers.ReadOnlyField()
 
     class Meta:
         model = Order
         fields = [
-            'id',
-            'user',
-            'status',
-            'created_at',
-            'items',
-            'updated_at',
+            "id",
+            "user",
+            "status",
+            "created_at",
+            "items",
+            "updated_at",
             "shipping_method",
-            'subtotal',
-            'total',
-            'shipping_total',
+            "subtotal",
+            "total",
+            "shipping_total",
             "billing_address",
-            "shipping_address"
+            "shipping_address",
         ]
+        read_only_fields = ["shipping_total", "total", "subtotal"]
 
     def create(self, validated_data):
         with transaction.atomic():
-            items = validated_data.pop('items')
+            items = validated_data.pop("items")
             order = Order.objects.create(**validated_data)
 
             prices = []
             for item in items:
-                variant_pk = item.get('variant').pk
+                variant_pk = item.get("variant").pk
                 variant = Variant.objects.filter(pk=variant_pk)[0]
                 product = Product.objects.filter(pk=variant.product_id)[0]
+                selected_qty = item.get("quantity", 0)
+
                 OrderItem.objects.create(
                     order=order,
                     price=product.price,
@@ -133,7 +134,9 @@ class OrderSerializer(serializers.ModelSerializer):
                     sku=variant.sku,
                     **item
                 )
-                prices.append(product.price*item.get('quantity'))
+                prices.append(product.price * selected_qty)
+                variant.qty_in_stock -= selected_qty
+                variant.save()
             subtotal = sum(prices)
             shipping_total = get_shipping_price(order.shipping_method)
 
