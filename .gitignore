@@ -7,3 +7,6 @@ back-end/store/__pycache__
 back-end/core/__pycache__
 back-end/celerybeat-schedule
 back-end/db.sqlite3
+front-end/yarn.lock
+front-end/package.json
+front-end/node_modules
