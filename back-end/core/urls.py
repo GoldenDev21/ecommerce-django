@@ -47,3 +47,5 @@ urlpatterns = [
     path("api/users/", UserListCreateView.as_view()),
     path("api-auth/", include("rest_framework.urls")),
 ]
+
+# TODO JWT token
