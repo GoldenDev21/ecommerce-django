@@ -35,7 +35,7 @@ const Navigator = () => {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "#FFF", boxShadow: "none" }}
+      sx={{ backgroundColor: "#FFF", boxShadow: "none", marginBottom: 5 }}
     >
       <Toolbar disableGutters>
         <Grid container justifyContent="space-between" alignItems="center">
