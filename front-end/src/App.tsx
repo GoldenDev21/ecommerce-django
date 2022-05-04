@@ -5,9 +5,26 @@ import Home from "./components/home/Home";
 import Layout from "./components/Layout";
 
 const theme = createTheme({
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+        },
+      },
+    },
+  },
   palette: {
     primary: {
-      main: "#5ece7b",
+      main: "#5ECE7B",
+      contrastText: "#FFF",
+    },
+    secondary: {
+      main: "#1D1F22",
+      dark: "#444649",
+    },
+    info: {
+      main: "#F1F2F3",
     },
   },
 });
