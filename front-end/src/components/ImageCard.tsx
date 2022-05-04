@@ -31,10 +31,6 @@ const ImageCard = (props: Props) => {
     description: {
       maxWidth: "50% !important",
     },
-    button: {
-      backgroundColor: "#000",
-      color: "#FFF",
-    },
   };
 
   return (
@@ -44,6 +40,7 @@ const ImageCard = (props: Props) => {
       direction="column"
       justifyContent="space-evenly"
       sx={styles.card}
+      spacing={2}
       {...gridProps}
     >
       <Grid item>
@@ -63,7 +60,7 @@ const ImageCard = (props: Props) => {
             variant="contained"
             size="large"
             disableElevation
-            sx={styles.button}
+            color="secondary"
           >
             {buttonLabel}
           </Button>
