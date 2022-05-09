@@ -148,4 +148,91 @@ export const mockProducts: Product[] = [
       },
     ]
   },
+  {
+    id: 18,
+    name: 'Bonnie Jeans',
+    brand: 'CK',
+    price: 29.99,
+    season: Season.Spring,
+    year: 2022,
+    description: 'Lorem ipsum blahblahblah',
+    category: '',
+    url_key: '',
+    variants: [
+      {
+        id: 10,
+        sku: 'REW939R9MBLU',
+        qty_in_stock: 122,
+        color: Color.Blue,
+        size: 'M',
+        image: ''
+      },
+      {
+        id: 11,
+        sku: 'REW939R9SGRN',
+        qty_in_stock: 111,
+        color: Color.Green,
+        size: 'S',
+        image: ''
+      },
+    ]
+  },
+  {
+    id: 19,
+    name: 'Bonnie Jeans',
+    brand: 'CK',
+    price: 29.99,
+    season: Season.Spring,
+    year: 2022,
+    description: 'Lorem ipsum blahblahblah',
+    category: '',
+    url_key: '',
+    variants: [
+      {
+        id: 10,
+        sku: 'REW939R9MBLU',
+        qty_in_stock: 122,
+        color: Color.Blue,
+        size: 'M',
+        image: ''
+      },
+      {
+        id: 11,
+        sku: 'REW939R9SGRN',
+        qty_in_stock: 111,
+        color: Color.Green,
+        size: 'S',
+        image: ''
+      },
+    ]
+  },
+  {
+    id: 20,
+    name: 'Bonnie Jeans',
+    brand: 'CK',
+    price: 29.99,
+    season: Season.Spring,
+    year: 2022,
+    description: 'Lorem ipsum blahblahblah',
+    category: '',
+    url_key: '',
+    variants: [
+      {
+        id: 10,
+        sku: 'REW939R9MBLU',
+        qty_in_stock: 122,
+        color: Color.Blue,
+        size: 'M',
+        image: ''
+      },
+      {
+        id: 11,
+        sku: 'REW939R9SGRN',
+        qty_in_stock: 111,
+        color: Color.Green,
+        size: 'S',
+        image: ''
+      },
+    ]
+  },
 ]

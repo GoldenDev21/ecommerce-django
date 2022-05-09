@@ -14,12 +14,23 @@ import {
   HeartOutline as HeartIcon,
 } from "mdi-material-ui";
 
+import { Color } from "../types/variant";
+import { Product } from "../types/product";
+import { getSwatchColor } from "../utils/color";
 import image from "../static/images/home/engin-akyurt-ehdI_89nzMo-unsplash.jpg";
 import { useState } from "react";
 
-const colors = ["blue", "orange", "pink"];
+type Props = {
+  product: Product;
+};
 
-const ProductCard = () => {
+const ProductCard = (props: Props) => {
+  const { product } = props;
+  const { name, variants, price } = product;
+
+  const uniqueColors = new Set(variants.map((variant) => variant.color));
+  const colors = Array.from(uniqueColors);
+
   const [selectedColor, setSelectedColor] = useState(colors[0]);
 
   const styles = {
@@ -69,14 +80,7 @@ const ProductCard = () => {
             </IconButton>
           </Grid>
         </Grid>
-
-        <CardMedia
-          component="img"
-          height="300"
-          image={image}
-          alt="product name"
-          sx={{ border: "1px solid red" }}
-        />
+        <CardMedia component="img" height="300" image={image} alt={name} />
       </Box>
       <Grid container justifyContent="flex-end">
         <Grid item>
@@ -93,7 +97,7 @@ const ProductCard = () => {
             <Grid item key={index}>
               <Box
                 sx={[
-                  { backgroundColor: color },
+                  { backgroundColor: getSwatchColor(color as Color) },
                   styles.colorSwatch,
                   color === selectedColor ? styles.selected : styles.unselected,
                 ]}
@@ -103,9 +107,9 @@ const ProductCard = () => {
           ))}
         </Grid>
         <Typography color="text.secondary" sx={{ my: 1 }}>
-          Vila sweater
+          {name}
         </Typography>
-        <Typography fontWeight={600}>$50.00</Typography>
+        <Typography fontWeight={600}>{`$${price}`}</Typography>
       </CardContent>
     </Card>
   );
