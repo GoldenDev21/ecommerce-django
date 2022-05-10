@@ -2,9 +2,10 @@ import "react-multi-carousel/lib/styles.css";
 
 import { Grid, Typography } from "@mui/material";
 
+import Carousel from "./Carousel";
 import FeaturedCollection from "./FeaturedCollection";
-import FeaturedProducts from "./FeaturedProducts";
 import ImageTiles from "./ImageTiles";
+import { mockProducts as products } from "../../mockData";
 
 const Home = () => {
   return (
@@ -12,7 +13,7 @@ const Home = () => {
       <Grid container spacing={2} direction="column">
         <FeaturedCollection />
         <ImageTiles />
-        <FeaturedProducts />
+        <Carousel items={products} title="Mix and Match" />
         <Grid item container xs={12}>
           <Grid item container xs={6}>
             <Typography>Subscribe to our newsletter</Typography>
