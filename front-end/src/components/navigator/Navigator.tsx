@@ -18,7 +18,9 @@ import { Hanger as Logo, Magnify as SearchIcon } from "mdi-material-ui";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import NavigatorButtons from "./NavigatorButtons";
+import NavigatorDrawer from "./NavigatorDrawer";
 import { Link as RouterLink } from "react-router-dom";
+import { categories } from "../../categories";
 import { useState } from "react";
 
 const Navigator = () => {
@@ -26,6 +28,7 @@ const Navigator = () => {
   const { breakpoints, palette } = theme;
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -33,6 +36,10 @@ const Navigator = () => {
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
+  };
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
   };
 
   const getSubCategories = (menuId: string) => {
@@ -48,125 +55,8 @@ const Navigator = () => {
     return element.getAttribute("id");
   };
 
-  const categories = [
-    {
-      label: "Clothing",
-      subCategories: [
-        {
-          label: "Dresses",
-          to: "/dresses",
-        },
-        {
-          label: "Jeans",
-          to: "/jeans",
-        },
-        {
-          label: "Pants",
-          to: "/pants",
-        },
-        {
-          label: "Jackets",
-          to: "/jackets",
-        },
-        {
-          label: "Skirts",
-          to: "/skirts",
-        },
-        {
-          label: "Blouses",
-          to: "/blouses",
-        },
-        {
-          label: "T-Shirts",
-          to: "/t-shirts",
-        },
-        {
-          label: "Outerwear",
-          to: "/outerwear",
-        },
-        {
-          label: "Sets",
-          to: "/sets",
-        },
-        {
-          label: "Sweaters",
-          to: "/sweaters",
-        },
-        {
-          label: "Sportswear",
-          to: "/sportswear",
-        },
-        {
-          label: "Sleepwear",
-          to: "/sleepwear",
-        },
-      ],
-    },
-    {
-      label: "Footwear",
-      subCategories: [
-        {
-          label: "Sandals",
-          to: "/sandals",
-        },
-        {
-          label: "Heels",
-          to: "/heels",
-        },
-        {
-          label: "Sneakers",
-          to: "/sneakers",
-        },
-        {
-          label: "Boots",
-          to: "/boots",
-        },
-        {
-          label: "Ballet Flats",
-          to: "/ballet-flats",
-        },
-        {
-          label: "Loafers",
-          to: "/loafers",
-        },
-      ],
-    },
-    {
-      label: "Accessories",
-      subCategories: [
-        {
-          label: "Bags",
-          to: "/bags",
-        },
-        {
-          label: "Sunglasses",
-          to: "/sunglasses",
-        },
-        {
-          label: "Jewelry",
-          to: "/jewelry",
-        },
-        {
-          label: "Wallets",
-          to: "/wallets",
-        },
-        {
-          label: "Belts",
-          to: "/belts",
-        },
-        {
-          label: "Hats",
-          to: "/hats",
-        },
-        {
-          label: "Scarves",
-          to: "/scarves",
-        },
-      ],
-    },
-  ];
-
   const darkBorder = `2px solid ${alpha("#000", 0.64)}`;
+
   const styles = {
     appBar: {
       backgroundColor: "#FFF",
@@ -236,7 +126,7 @@ const Navigator = () => {
                 </Box>
               </Grid>
               <Grid item xs={3} sx={styles.hideOnLargeScreens}>
-                <IconButton>
+                <IconButton onClick={() => setDrawerOpen(true)}>
                   <MenuIcon color="primary" fontSize="medium" />
                 </IconButton>
               </Grid>
@@ -315,6 +205,7 @@ const Navigator = () => {
           </Paper>
         </Box>
       </Popper>
+      <NavigatorDrawer open={drawerOpen} onClose={handleCloseDrawer} />
     </>
   );
 };
