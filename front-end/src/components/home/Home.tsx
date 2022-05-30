@@ -1,33 +1,13 @@
-import "react-multi-carousel/lib/styles.css";
-
-import { Grid, Typography } from "@mui/material";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import Carousel from "./Carousel";
-import FeaturedCollection from "./FeaturedCollection";
-import ImageTiles from "./ImageTiles";
-import { mockProducts as products } from "../../mockData";
+import { Stack } from "@mui/material";
 
 const Home = () => {
   return (
-    <>
-      <Grid container spacing={2} direction="column">
-        <FeaturedCollection />
-        <ImageTiles />
-        <Carousel items={products} title="Mix and Match" />
-        <Grid item container xs={12}>
-          <Grid item container xs={6}>
-            <Typography>Subscribe to our newsletter</Typography>
-            <Typography>
-              Get notified of upcoming sales and events. Receive gifts and
-              special offers!
-            </Typography>
-          </Grid>
-          <Grid item container xs={6}>
-            <Typography></Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-    </>
+    <Stack justifyContent="center" alignItems="center" spacing={16}>
+      <Carousel />
+    </Stack>
   );
 };
 

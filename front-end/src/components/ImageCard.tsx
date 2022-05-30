@@ -1,4 +1,4 @@
-import { Button, Grid, GridProps, GridSize, Typography } from "@mui/material";
+import { Box, Button, GridProps, Stack, Typography } from "@mui/material";
 
 interface Props extends GridProps {
   image: string;
@@ -6,67 +6,57 @@ interface Props extends GridProps {
   subtitle: string;
   buttonLabel?: string;
   description?: string;
-  gridWidth?: GridSize;
   imagePosition?: string;
 }
 
 const ImageCard = (props: Props) => {
   const {
+    image,
     title,
     subtitle,
-    description,
-    image,
     buttonLabel,
+    description,
     imagePosition = "top-left",
-    ...gridProps
   } = props;
 
   const styles = {
-    card: {
-      padding: 8,
+    container: {
       backgroundImage: `url(${image})`,
-      backgroundSize: "cover",
       backgroundPosition: imagePosition,
+      backgroundSize: "cover",
+      height: "100%",
+      padding: 8,
     },
     description: {
       maxWidth: "50% !important",
     },
+    button: {
+      marginTop: 8,
+      width: "50%",
+    },
   };
 
   return (
-    <Grid
-      item
-      container
-      direction="column"
-      justifyContent="space-evenly"
-      sx={styles.card}
-      spacing={2}
-      {...gridProps}
-    >
-      <Grid item>
+    <Box sx={styles.container}>
+      <Stack justifyContent="center" spacing={3}>
         <Typography variant="h6">{title}</Typography>
-      </Grid>
-      <Grid item>
         <Typography variant="h3">{subtitle}</Typography>
-      </Grid>
-      {description && (
-        <Grid item sx={styles.description}>
-          <Typography>{description}</Typography>
-        </Grid>
-      )}
-      {buttonLabel && (
-        <Grid item>
+        {description && (
+          <Typography sx={styles.description}>{description}</Typography>
+        )}
+        {buttonLabel && (
           <Button
             variant="contained"
             size="large"
             disableElevation
             color="secondary"
+            sx={styles.button}
           >
             {buttonLabel}
           </Button>
-        </Grid>
-      )}
-    </Grid>
+        )}
+      </Stack>
+    </Box>
   );
 };
 

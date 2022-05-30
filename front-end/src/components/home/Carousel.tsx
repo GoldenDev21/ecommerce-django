@@ -1,62 +1,47 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
-import MuiCarousel from "react-material-ui-carousel";
-import ProductCard from "../ProductCard";
+import { Carousel as ResponsiveCarousel } from "react-responsive-carousel";
+import { srcset } from "../../utils/image";
 
-type CarouselProps = {
-  items: any[];
-  title?: string;
-  visibleSlides?: 1 | 2 | 3 | 4 | 5 | 6;
-};
-
-const Carousel = (props: CarouselProps) => {
-  const { title, items, visibleSlides = 4 } = props;
-
-  const getChunks = (items: any[], chunkSize: number) => {
-    let chunks = [];
-    for (let i = 0; i < items.length; i += chunkSize) {
-      const chunk = items.slice(i, i + chunkSize);
-      chunks.push(chunk);
-    }
-    return chunks;
-  };
-
-  const styles = {
-    carouselItem: {
-      maxWidth: 350,
-      mx: 2,
-    },
-  };
-
+const Carousel = () => {
   return (
-    <>
-      {title && (
-        <Grid item container justifyContent="center">
-          <Typography variant="h5" fontWeight={600} sx={{ mb: 5 }}>
-            {title}
-          </Typography>
-        </Grid>
-      )}
-      <Box>
-        <MuiCarousel
-          autoPlay={false}
-          navButtonsAlwaysVisible
-          height={500}
-          indicators={false}
-          animation="fade"
-        >
-          {getChunks(items, visibleSlides).map((subChunk, index) => (
-            <Box display="flex" justifyContent="center" key={index}>
-              {subChunk.map((chunk, idx) => (
-                <Box sx={styles.carouselItem} key={idx}>
-                  <ProductCard product={chunk} />
-                </Box>
-              ))}
-            </Box>
-          ))}
-        </MuiCarousel>
-      </Box>
-    </>
+    <Grid container item sx={{ width: "80%" }}>
+      <ResponsiveCarousel
+        showThumbs={false}
+        infiniteLoop
+        autoPlay
+        showArrows={false}
+        interval={6000}
+      >
+        <Box>
+          <img
+            {...srcset(
+              "https://images.unsplash.com/photo-1530377995122-4484c3886b33",
+              1600
+            )}
+            alt="Woman sitting on beach"
+          />
+        </Box>
+        <Box>
+          <img
+            {...srcset(
+              "https://images.unsplash.com/photo-1496747611176-843222e1e57c",
+              1600
+            )}
+            alt="Woman walking near seaside while holding woven bag"
+          />
+        </Box>
+        <Box>
+          <img
+            {...srcset(
+              "https://images.unsplash.com/photo-1469334031218-e382a71b716b",
+              1600
+            )}
+            alt="Woman wearing a green top and glasses"
+          />
+        </Box>
+      </ResponsiveCarousel>
+    </Grid>
   );
 };
 
