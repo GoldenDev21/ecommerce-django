@@ -1,7 +1,6 @@
-import { Box, Grid } from "@mui/material";
-
+import { Grid } from "@mui/material";
+import ImageCard from "../ImageCard";
 import { Carousel as ResponsiveCarousel } from "react-responsive-carousel";
-import { srcset } from "../../utils/image";
 
 const Carousel = () => {
   return (
@@ -12,34 +11,30 @@ const Carousel = () => {
         autoPlay
         showArrows={false}
         interval={6000}
+        showStatus={false}
       >
-        <Box>
-          <img
-            {...srcset(
-              "https://images.unsplash.com/photo-1530377995122-4484c3886b33",
-              1600
-            )}
-            alt="Woman sitting on beach"
-          />
-        </Box>
-        <Box>
-          <img
-            {...srcset(
-              "https://images.unsplash.com/photo-1496747611176-843222e1e57c",
-              1600
-            )}
-            alt="Woman walking near seaside while holding woven bag"
-          />
-        </Box>
-        <Box>
-          <img
-            {...srcset(
-              "https://images.unsplash.com/photo-1469334031218-e382a71b716b",
-              1600
-            )}
-            alt="Woman wearing a green top and glasses"
-          />
-        </Box>
+        <ImageCard
+          image="https://images.unsplash.com/photo-1507702553912-a15641e827c8"
+          title="SUMMER COLLECTION 2022"
+          subtitle="Handbags"
+          buttonLabel="SHOP NOW"
+          imageAlt="Woman holding pink leather crossbody bag on stairs"
+        />
+        <ImageCard
+          image="https://images.unsplash.com/photo-1496747611176-843222e1e57c"
+          title="SUMMER COLLECTION 2022"
+          subtitle="Beachwear"
+          buttonLabel="SHOP NOW"
+          imageAlt="Woman in dress walking along seaside holding a woven bag"
+          imageSx={{ transform: "scaleX(-1)" }}
+        />
+        <ImageCard
+          image="https://images.unsplash.com/photo-1502868354157-ec2edd2a1651"
+          title="SUMMER COLLECTION 2022"
+          subtitle="Dresses & Rompers"
+          buttonLabel="SHOP NOW"
+          imageAlt="Woman in white and red floral dress standing in field"
+        />
       </ResponsiveCarousel>
     </Grid>
   );

@@ -1,12 +1,16 @@
 import { Box, Button, GridProps, Stack, Typography } from "@mui/material";
 
+import { srcset } from "../utils/image";
+
 interface Props extends GridProps {
   image: string;
+  imageAlt: string;
   title: string;
   subtitle: string;
   buttonLabel?: string;
   description?: string;
-  imagePosition?: string;
+  textContainerSx?: { [key: string]: string | number };
+  imageSx?: { [key: string]: string | number };
 }
 
 const ImageCard = (props: Props) => {
@@ -16,16 +20,17 @@ const ImageCard = (props: Props) => {
     subtitle,
     buttonLabel,
     description,
-    imagePosition = "top-left",
+    imageAlt,
+    textContainerSx = {
+      left: "10%",
+      top: "30%",
+    },
+    imageSx = {},
   } = props;
 
   const styles = {
     container: {
-      backgroundImage: `url(${image})`,
-      backgroundPosition: imagePosition,
-      backgroundSize: "cover",
       height: "100%",
-      padding: 8,
     },
     description: {
       maxWidth: "50% !important",
@@ -34,13 +39,33 @@ const ImageCard = (props: Props) => {
       marginTop: 8,
       width: "50%",
     },
+    textContainer: {
+      position: "absolute",
+      ...textContainerSx,
+    },
+    image: {
+      ...imageSx,
+    },
+    text: {
+      textAlign: "start",
+    },
   };
 
   return (
     <Box sx={styles.container}>
-      <Stack justifyContent="center" spacing={3}>
-        <Typography variant="h6">{title}</Typography>
-        <Typography variant="h3">{subtitle}</Typography>
+      <Box
+        component="img"
+        {...srcset(image, 500)}
+        alt={imageAlt}
+        sx={styles.image}
+      />
+      <Stack spacing={3} sx={styles.textContainer}>
+        <Typography variant="h6" sx={styles.text}>
+          {title}
+        </Typography>
+        <Typography variant="h3" sx={styles.text}>
+          {subtitle}
+        </Typography>
         {description && (
           <Typography sx={styles.description}>{description}</Typography>
         )}
