@@ -11,3 +11,4 @@ front-end/yarn.lock
 front-end/package.json
 front-end/node_modules
 back-end/store/views/__pycache__
+front-end/.vscode
