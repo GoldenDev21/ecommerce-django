@@ -45,7 +45,7 @@ const App = () => {
                 <Route
                   path={routeWithoutSlash}
                   key={route.label}
-                  element={<ProductPage category={routeWithoutSlash} />}
+                  element={<ProductPage category={route.category} />}
                 />
               );
             })}
