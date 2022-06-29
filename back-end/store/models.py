@@ -3,17 +3,40 @@ from django.template.defaultfilters import slugify
 from django.conf import settings
 
 
+class Category(models.IntegerChoices):
+    # Clothing
+    BLOUSES = 1,
+    DRESSES = 2,
+    JACKETS = 3,
+    JEANS = 4,
+    OUTERWEAR = 5,
+    PANTS = 6,
+    SETS = 7,
+    SKIRTS = 8,
+    SLEEPWEAR = 9,
+    SPORTSWEAR = 10,
+    SWEATERS = 11,
+    T_SHIRTS = 12,
+    # Footwear
+    SANDALS = 13,
+    HEELS = 14,
+    SNEAKERS = 15,
+    BOOTS = 16,
+    BALLET_FLATS = 17,
+    LOAFERS = 18,
+    # Accessories
+    BAGS = 19,
+    SUNGLASSES = 20,
+    JEWELRY = 21,
+    WALLETS = 22,
+    BELTS = 23,
+    HATS = 24,
+    SCARVES = 25
+
+
 class Brand(models.Model):
     name = models.CharField(max_length=40, unique=True)
     abbreviation = models.CharField(max_length=3, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
@@ -26,15 +49,19 @@ class Product(models.Model):
         SUMMER = 3,
         FALL = 4
 
+    class Department(models.IntegerChoices):
+        CLOTHING = 1,
+        SHOES = 2,
+        ACCESSORIES = 3
+
     name = models.CharField(max_length=120, unique=True)
     brand = models.ForeignKey(Brand, related_name="products", on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     season = models.PositiveSmallIntegerField(choices=Season.choices)
     year = models.PositiveSmallIntegerField()
     description = models.TextField(max_length=1500)
-    category = models.ForeignKey(
-        Category, related_name="products", on_delete=models.SET_NULL, null=True
-    )
+    department = models.PositiveSmallIntegerField(choices=Department.choices)
+    category = models.PositiveSmallIntegerField(choices=Category.choices)
     url_key = models.SlugField(unique=True, blank=True)
 
     def __str__(self):

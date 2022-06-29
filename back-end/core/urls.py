@@ -10,10 +10,6 @@ from accounts.views import (
 from store.views.products import ProductListCreateView, ProductRetrieveUpdateDestroyView
 from store.views.variants import VariantRetrieveUpdateDestroyView
 from store.views.brands import BrandListCreateView, BrandRetrieveUpdateDestroyView
-from store.views.categories import (
-    CategoryListCreateView,
-    CategoryRetrieveUpdateDestroyView,
-)
 from store.views.promo_codes import (
     PromoCodeListCreateView,
     PromoCodeRetrieveUpdateDestroyView,
@@ -30,8 +26,6 @@ urlpatterns = [
     path("", include(router.urls)),
     path("api/brands/<pk>/", BrandRetrieveUpdateDestroyView.as_view()),
     path("api/brands/", BrandListCreateView.as_view()),
-    path("api/categories/<pk>/", CategoryRetrieveUpdateDestroyView.as_view()),
-    path("api/categories/", CategoryListCreateView.as_view()),
     path("api/products/variants/<pk>", VariantRetrieveUpdateDestroyView.as_view()),
     path("api/products/<pk>/", ProductRetrieveUpdateDestroyView.as_view()),
     path("api/products/", ProductListCreateView.as_view()),

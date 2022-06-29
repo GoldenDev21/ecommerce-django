@@ -2,7 +2,7 @@ import decimal
 
 from rest_framework import serializers
 from django.db import transaction
-from .models import Brand, Category, Product, Variant, PromoCode, Order, OrderItem
+from .models import Brand, Product, Variant, PromoCode, Order, OrderItem
 from .utils import create_sku, update_instance, get_shipping_price
 
 
@@ -24,12 +24,6 @@ class BrandSerializer(serializers.ModelSerializer):
             brand.abbreviation = validated_data["abbreviation"].upper()
         brand.save()
         return brand
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ["id", "name", "description"]
 
 
 class VariantSerializer(serializers.ModelSerializer):
