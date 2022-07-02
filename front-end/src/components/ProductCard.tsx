@@ -8,6 +8,7 @@ import {
   IconButton,
   Typography,
   Zoom,
+  alpha,
 } from "@mui/material";
 import {
   CartPlus as CartPlusIcon,
@@ -47,6 +48,7 @@ const ProductCard = (props: Props) => {
     colorSwatch: {
       height: 12,
       width: 12,
+      border: `1px solid ${alpha("#000", 0.3)}`,
       transition: "all .2s ease-in-out",
       "&:hover": {
         cursor: "pointer",
@@ -66,7 +68,12 @@ const ProductCard = (props: Props) => {
     fab: {
       marginTop: -3,
       marginLeft: -8,
-      position: "fixed",
+      position: "relative",
+    },
+    favoriteIcon: {
+      position: "absolute",
+      top: 0,
+      right: 0,
     },
   };
 
@@ -75,7 +82,7 @@ const ProductCard = (props: Props) => {
       <Box position={"relative"}>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <IconButton sx={{ position: "absolute", top: 0, right: 0 }}>
+            <IconButton sx={styles.favoriteIcon}>
               <HeartIcon />
             </IconButton>
           </Grid>

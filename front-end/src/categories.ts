@@ -1,4 +1,4 @@
-import {Category} from "./types/category"
+import { Category } from "./types/category";
 
 export const categories = [
   {
@@ -7,62 +7,62 @@ export const categories = [
       {
         label: "Dresses",
         to: "/dresses",
-        category: Category.Dresses
+        category: Category.Dresses,
       },
       {
         label: "Jeans",
         to: "/jeans",
-        category: Category.Jeans
+        category: Category.Jeans,
       },
       {
         label: "Pants",
         to: "/pants",
-        category: Category.Pants
+        category: Category.Pants,
       },
       {
         label: "Jackets",
         to: "/jackets",
-        category: Category.Jackets
+        category: Category.Jackets,
       },
       {
         label: "Skirts",
         to: "/skirts",
-        category: Category.Skirts
+        category: Category.Skirts,
       },
       {
         label: "Blouses",
         to: "/blouses",
-        category: Category.Blouses
+        category: Category.Blouses,
       },
       {
         label: "T-Shirts",
         to: "/t-shirts",
-        category: Category.TShirts
+        category: Category.TShirts,
       },
       {
         label: "Outerwear",
         to: "/outerwear",
-        category: Category.Outerwear
+        category: Category.Outerwear,
       },
       {
         label: "Sets",
         to: "/sets",
-        category: Category.Sets
+        category: Category.Sets,
       },
       {
         label: "Sweaters",
         to: "/sweaters",
-        category: Category.Sweaters
-      }, 
+        category: Category.Sweaters,
+      },
       {
         label: "Sportswear",
         to: "/sportswear",
-        category: Category.Sportswear
+        category: Category.Sportswear,
       },
       {
         label: "Sleepwear",
         to: "/sleepwear",
-        category: Category.Sleepwear
+        category: Category.Sleepwear,
       },
     ],
   },
@@ -72,32 +72,32 @@ export const categories = [
       {
         label: "Sandals",
         to: "/sandals",
-        category: Category.Sandals
+        category: Category.Sandals,
       },
       {
         label: "Heels",
         to: "/heels",
-        category:Category.Heels
+        category: Category.Heels,
       },
       {
         label: "Sneakers",
         to: "/sneakers",
-        category:Category.Sneakers
+        category: Category.Sneakers,
       },
       {
         label: "Boots",
         to: "/boots",
-        category:Category.Boots
+        category: Category.Boots,
       },
       {
         label: "Ballet Flats",
         to: "/ballet-flats",
-        category:Category.BalletFlats
+        category: Category.BalletFlats,
       },
       {
         label: "Loafers",
         to: "/loafers",
-        category:Category.Loafers
+        category: Category.Loafers,
       },
     ],
   },
@@ -107,37 +107,37 @@ export const categories = [
       {
         label: "Bags",
         to: "/bags",
-        category:Category.Bags
+        category: Category.Bags,
       },
       {
         label: "Sunglasses",
         to: "/sunglasses",
-        category:Category.Sunglasses
+        category: Category.Sunglasses,
       },
       {
         label: "Jewelry",
         to: "/jewelry",
-        category:Category.Jewelry
+        category: Category.Jewelry,
       },
       {
         label: "Wallets",
         to: "/wallets",
-        category:Category.Wallets
+        category: Category.Wallets,
       },
       {
         label: "Belts",
         to: "/belts",
-        category: Category.Belts
+        category: Category.Belts,
       },
       {
         label: "Hats",
         to: "/hats",
-        category: Category.Hats
+        category: Category.Hats,
       },
       {
         label: "Scarves",
         to: "/scarves",
-        category: Category.Scarves
+        category: Category.Scarves,
       },
     ],
   },
