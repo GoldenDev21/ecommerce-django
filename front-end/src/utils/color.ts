@@ -2,10 +2,6 @@ import {Color} from "../types/variant"
 
 export const getSwatchColor = (color: Color) => {
 
-  const colorKeys = Object.keys(Color).map(color => color.toLowerCase());
-
-  console.log(colorKeys, color)
-
   switch(color){
     case Color.Black:
       return "black"
