@@ -36,12 +36,12 @@ const ProductCard = (props: Props) => {
 
   const styles = {
     card: {
-      minWidth: 230,
       boxShadow: "0px 4px 9px -3px rgba(0,0,0,0.3)",
       transition: "all .2s ease-in-out",
       "&:hover": {
         boxShadow: "0px 8px 16px -8px rgba(0,0,0,0.55)",
         transform: "scale(1.05)",
+        cursor: "pointer",
       },
       padding: 2,
     },
