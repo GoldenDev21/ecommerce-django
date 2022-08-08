@@ -32,7 +32,7 @@ class VariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variant
         fields = ["id", "sku", "qty_in_stock", "color", "size", "image"]
-        read_only_fields = ["sku", "color", "size"]
+        read_only_fields = ["sku"]  # TODO: Do not allow color & size updates
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -55,6 +55,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "variants",
             "season",
             "year",
+            "department"
         ]
 
     def create(self, validated_data):
@@ -76,7 +77,7 @@ class ProductSerializer(serializers.ModelSerializer):
         else:
             product = update_instance(
                 instance,
-                ["name", "brand", "price", "description", "category", "season", "year"],
+                ["name", "brand", "price", "description", "category", "season", "year", "department"],
                 validated_data,
             )
             product.save()
