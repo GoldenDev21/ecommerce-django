@@ -26,6 +26,6 @@ class ProductListCreateView(generics.ListCreateAPIView):
     """
 
     serializer_class = ProductSerializer
-    # permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
     queryset = Product.objects.all()
     filterset_class = ProductFilter
