@@ -63,6 +63,8 @@ class Product(models.Model):
     department = models.PositiveSmallIntegerField(choices=Department.choices)
     category = models.PositiveSmallIntegerField(choices=Category.choices)
     url_key = models.SlugField(unique=True, blank=True)
+    active = models.BooleanField(default=True)
+    in_stock = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
