@@ -2,6 +2,7 @@ from store.serializers import ProductSerializer
 from store.models import Product
 from rest_framework import generics
 from store.permissions import IsAdminOrReadOnly
+from store.filters import ProductFilter
 
 
 class ProductRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
@@ -25,5 +26,6 @@ class ProductListCreateView(generics.ListCreateAPIView):
     """
 
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
     permission_classes = [IsAdminOrReadOnly]
+    queryset = Product.objects.all()
+    filterset_class = ProductFilter

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_filters",
     "accounts",
     "store",
 ]
@@ -137,4 +138,9 @@ CELERY_BEAT_SCHEDULE = {
         "task": "store.tasks.check_for_expired_promo_codes",
         "schedule": crontab(hour="*/1"),
     },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'COERCE_DECIMAL_TO_STRING': False
 }
