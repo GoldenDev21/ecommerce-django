@@ -14,5 +14,6 @@ class ProductFilter(filters.FilterSet):
             'variants__color': ['exact', 'in'],
             'active':  ['exact'],
             'in_stock': ['exact'],
-            'variants__qty_in_stock': ['gte', 'lte']
+            'variants__qty_in_stock': ['gte', 'lte'],
+            'category': ['exact']
         }
