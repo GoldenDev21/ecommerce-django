@@ -1,43 +1,42 @@
-import {Color} from "../types/variant"
+import { Color } from "../types/variant";
 
 export const getSwatchColor = (color: Color) => {
-
-  switch(color){
+  switch (color) {
     case Color.Black:
-      return "black"
+      return "black";
     case Color.Blue:
-      return "blue"
+      return "blue";
     case Color.Beige:
-      return "beige"
+      return "beige";
     case Color.Brown:
-      return "brown"
+      return "brown";
     case Color.Gold:
-      return "gold"
+      return "gold";
     case Color.Green:
-      return "green"
+      return "green";
     case Color.Grey:
-      return "grey"
+      return "grey";
     case Color.Ivory:
-      return "ivory"
+      return "ivory";
     case Color.MultiColored:
-      return "#FFF"
+      return "#FFF";
     case Color.Orange:
-      return "#FFF"
+      return "orange";
     case Color.Pink:
-      return "#FFF"
+      return "pink";
     case Color.Purple:
-      return "#FFF"
+      return "purple";
     case Color.Red:
-      return "#FFF"
+      return "red";
     case Color.Silver:
-      return "#FFF"
+      return "silver";
     case Color.Turquoise:
-      return "#FFF"
+      return "turquoise";
     case Color.White:
-      return "#FFF"
+      return "white";
     case Color.Yellow:
-      return "#FFF"
+      return "yellow";
     default:
-      return '#FFF'
+      return "black";
   }
-}
+};
