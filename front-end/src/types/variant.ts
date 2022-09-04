@@ -1,11 +1,11 @@
-export interface Variant {
+export type Variant = {
   color: Color;
   id: number;
   image: string;
   qty_in_stock: number;
   size: Size;
   sku: string;
-}
+};
 
 export enum Color {
   Black = "BLK",
