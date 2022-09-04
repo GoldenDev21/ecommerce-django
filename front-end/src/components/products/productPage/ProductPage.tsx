@@ -15,6 +15,7 @@ import { SyntheticEvent, useContext, useEffect, useState } from "react";
 import { clothingSizes, shoeSizes } from "../../../options/variant";
 
 import { BrandsContext } from "../../../contexts/BrandsContext";
+import { Color } from "../../../types/variant";
 import { Product } from "../../../types/product";
 import ProductCard from "../../ProductCard";
 import { getProducts } from "../../../api/product";
@@ -39,6 +40,7 @@ const ProductPage = (props: Props) => {
   const [brand, setBrand] = useState<Option[]>([]);
   const [price, setPrice] = useState<number[]>([0, 100]);
   const [size, setSize] = useState<Option[]>([]);
+  const [color, setColor] = useState<Option[]>([]);
 
   const { brands } = useContext(BrandsContext);
 
@@ -51,7 +53,15 @@ const ProductPage = (props: Props) => {
     }));
   };
 
+  const getParamValue = (filter: Option[]) => {
+    return filter.map((f) => f.value).join();
+  };
+
   const brandOptions = formatOptions(brands);
+  const colorOptions = Object.entries(Color).map((color) => ({
+    label: color[0],
+    value: color[1],
+  }));
 
   const filters = [
     {
@@ -73,16 +83,33 @@ const ProductPage = (props: Props) => {
       label: "Size",
       value: size,
       stateSetter: setSize,
-      options: sizes as readonly { label: string; value: string }[],
+      options: sizes as readonly Option[],
+    },
+    {
+      id: "color",
+      label: "Color",
+      value: color,
+      stateSetter: setColor,
+      options: colorOptions,
     },
   ];
 
   const fetchProducts = () => {
     setLoading(true);
 
-    console.log(brand, sortBy, price, size, category); // TODO: Connect filters once back-end is in place
+    const params = {
+      category: category.toString(),
+      in_stock: "True",
+      active: "True",
+      ...(brand.length ? { brand__in: getParamValue(brand) } : {}),
+      ...(color.length ? { variants__color__in: getParamValue(color) } : {}),
+      ...(size.length ? { variants__size__in: getParamValue(size) } : {}),
+      ...(price.length
+        ? { price__gte: price[0].toString(), price__lte: price[1].toString() }
+        : {}),
+    };
 
-    getProducts()
+    getProducts(new URLSearchParams(params))
       .then((response) => {
         setProducts(response.data);
       })
@@ -97,7 +124,7 @@ const ProductPage = (props: Props) => {
   useEffect(() => {
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [category]);
 
   const styles = {
     container: {
@@ -133,64 +160,67 @@ const ProductPage = (props: Props) => {
   return (
     <>
       {loading && <LinearProgress />}
-      {products.length && !loading && (
-        <Grid container spacing={2}>
-          <Grid item xs={3} sx={styles.container}>
-            <Paper sx={styles.container}>
-              <Grid container direction="column">
-                <Typography variant="h5">Filters</Typography>
-                {filters.map(({ id, stateSetter, label, value, options }) => (
-                  <Autocomplete
-                    key={id}
-                    multiple
-                    onChange={(
-                      event: SyntheticEvent<Element, Event>,
-                      newValue: Option[]
-                    ) => stateSetter(newValue)}
-                    options={options}
-                    value={value}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        variant="standard"
-                        label={label}
-                        placeholder={label}
-                        sx={styles.textField}
-                      />
-                    )}
-                  />
-                ))}
-                <Typography color="textSecondary" sx={styles.label}>
-                  Price
-                </Typography>
-                <Stack spacing={2} direction="row" alignItems="center">
-                  <Typography
-                    sx={styles.sliderLabel}
-                  >{`$${price[0]}`}</Typography>
-                  <Slider
-                    value={price}
-                    onChange={(event: Event, newValue: number | number[]) =>
-                      setPrice(newValue as number[])
-                    }
-                    valueLabelDisplay="off"
-                  />
-                  <Typography
-                    sx={styles.sliderLabel}
-                  >{`$${price[1]}`}</Typography>
-                </Stack>
-                <Grid
-                  item
-                  container
-                  justifyContent="flex-end"
-                  sx={styles.searchButtonContainer}
-                >
-                  <Button onClick={fetchProducts} variant="contained">
-                    Search
-                  </Button>
-                </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={3} sx={styles.container}>
+          <Paper sx={styles.container}>
+            <Grid container direction="column">
+              <Typography variant="h5">Filters</Typography>
+              {filters.map(({ id, stateSetter, label, value, options }) => (
+                <Autocomplete
+                  key={id}
+                  multiple
+                  onChange={(
+                    event: SyntheticEvent<Element, Event>,
+                    newValue: Option[]
+                  ) => stateSetter(newValue)}
+                  options={options}
+                  value={value}
+                  isOptionEqualToValue={(option: Option, value: Option) =>
+                    option.value === value.value
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      label={label}
+                      placeholder={label}
+                      sx={styles.textField}
+                    />
+                  )}
+                />
+              ))}
+              <Typography color="textSecondary" sx={styles.label}>
+                Price
+              </Typography>
+              <Stack spacing={2} direction="row" alignItems="center">
+                <Typography
+                  sx={styles.sliderLabel}
+                >{`$${price[0]}`}</Typography>
+                <Slider
+                  value={price}
+                  onChange={(event: Event, newValue: number | number[]) =>
+                    setPrice(newValue as number[])
+                  }
+                  valueLabelDisplay="off"
+                />
+                <Typography
+                  sx={styles.sliderLabel}
+                >{`$${price[1]}`}</Typography>
+              </Stack>
+              <Grid
+                item
+                container
+                justifyContent="flex-end"
+                sx={styles.searchButtonContainer}
+              >
+                <Button onClick={fetchProducts} variant="contained">
+                  Search
+                </Button>
               </Grid>
-            </Paper>
-          </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+        {products.length && (
           <Grid item container xs={9} spacing={2}>
             {products.map((product) => (
               <Grid item xs={3} key={product.id}>
@@ -198,9 +228,9 @@ const ProductPage = (props: Props) => {
               </Grid>
             ))}
           </Grid>
-        </Grid>
-      )}
-      {!loading && !products.length && (
+        )}
+      </Grid>
+      {!loading && products.length === 0 && (
         <Typography>No products found.</Typography>
       )}
     </>

@@ -1,8 +1,8 @@
-import axios, {AxiosResponse} from "axios";
+import axios, { AxiosResponse } from "axios";
 
-import {Product} from "../types/product"
-import apiName from "./api"
+import { Product } from "../types/product";
+import apiName from "./api";
 
-export const getProducts = (): Promise<AxiosResponse<Product[]>> => {
-  return axios.get(`${apiName}/products/`)
-}
+export const getProducts = (params: any): Promise<AxiosResponse<Product[]>> => {
+  return axios.get(`${apiName}/products/`, { params: params });
+};
