@@ -6,7 +6,9 @@ from accounts.views import (
     UserCreateView,
     AddressRetrieveUpdateDestroyView,
     AddressListView,
+    LoginView
 )
+from knox import views as knox_views
 from store.views.products import ProductListCreateView, ProductRetrieveUpdateDestroyView
 from store.views.variants import VariantRetrieveUpdateDestroyView
 from store.views.brands import BrandListCreateView, BrandRetrieveUpdateDestroyView
@@ -39,7 +41,8 @@ urlpatterns = [
     path("api/users/new/", UserCreateView.as_view()),
     path("api/users/<pk>/", UserRetrieveEditDestroyView.as_view()),
     path("api/users/", UserListCreateView.as_view()),
-    path("api-auth/", include("rest_framework.urls")),
+    path('api/auth/login/', LoginView.as_view(), name='knox_login'),
+    path('api/auth/logout/', knox_views.LogoutView.as_view(), name='knox_logout'),
+    path('api/auth/logoutall/', knox_views.LogoutAllView.as_view(), name='knox_logoutall'),
+    path("api/", include("rest_framework.urls")),
 ]
-
-# TODO JWT token
