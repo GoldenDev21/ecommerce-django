@@ -1,14 +1,15 @@
-from .models import User, Address
-from rest_framework import generics, permissions
-from .serializers import UserSerializer, AddressSerializer
-from store.permissions import IsOwnerOrAdmin
+from accounts.models import User, Address
+from accounts.serializers import UserSerializer, AddressSerializer, CurrentUserSerializer
 from django.contrib.auth import login
+from store.permissions import IsOwnerOrAdmin
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from knox.views import LoginView as KnoxLoginView
 
 
 class LoginView(KnoxLoginView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = [AllowAny,]
 
     def post(self, request, format=None):
         serializer = AuthTokenSerializer(data=request.data)
@@ -18,7 +19,7 @@ class LoginView(KnoxLoginView):
         return super(LoginView, self).post(request, format=None)
 
 
-class UserListCreateView(generics.ListCreateAPIView):
+class UserListCreateView(ListCreateAPIView):
     """
     View that returns a list of users and allows creation of a new user.
 
@@ -27,19 +28,30 @@ class UserListCreateView(generics.ListCreateAPIView):
 
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdminUser]
 
 
-class UserCreateView(generics.CreateAPIView):
+class UserCreateView(CreateAPIView):
     """
     View that allows an anonymous user to create an account.
     """
 
     serializer_class = UserSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AllowAny]
 
 
-class UserRetrieveEditDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class CurrentUserView(RetrieveAPIView):
+    """
+    View that returns the current user.
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = CurrentUserSerializer
+
+    def get_object(self):
+        return self.request.user
+
+
+class UserRetrieveEditDestroyView(RetrieveUpdateDestroyAPIView):
     """
     View that allows edit and deletion of a user.
 
@@ -49,10 +61,10 @@ class UserRetrieveEditDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     lookup_field = "pk"
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdminUser]
 
 
-class AddressRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class AddressRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     """
     View that allows edit and deletion of an address.
 
@@ -66,7 +78,7 @@ class AddressRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrAdmin]
 
 
-class AddressListView(generics.ListCreateAPIView):
+class AddressListView(ListCreateAPIView):
     """
     View that allows returns a list of all addresses and allows the creation of a new one.
 
@@ -75,4 +87,4 @@ class AddressListView(generics.ListCreateAPIView):
 
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]

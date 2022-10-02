@@ -6,7 +6,8 @@ from accounts.views import (
     UserCreateView,
     AddressRetrieveUpdateDestroyView,
     AddressListView,
-    LoginView
+    LoginView,
+    CurrentUserView
 )
 from knox import views as knox_views
 from store.views.products import ProductListCreateView, ProductRetrieveUpdateDestroyView
@@ -38,6 +39,7 @@ urlpatterns = [
     path("api/orders/", OrderListCreateView.as_view()),
     path("api/users/addresses/<pk>", AddressRetrieveUpdateDestroyView.as_view()),
     path("api/users/addresses/", AddressListView.as_view()),
+    path("api/users/current/", CurrentUserView.as_view()),
     path("api/users/new/", UserCreateView.as_view()),
     path("api/users/<pk>/", UserRetrieveEditDestroyView.as_view()),
     path("api/users/", UserListCreateView.as_view()),

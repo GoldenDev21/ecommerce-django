@@ -9,25 +9,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Form, Formik, FormikValues } from "formik";
+import { Form, Formik } from "formik";
 
-import { authenticateUser } from "../../api/user";
+import { UserContext } from "../../contexts/UserContext";
+import { UserSignInRequestBody } from "../../types/user";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { handleLoginUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogin = async (values: FormikValues) => {
-    try {
-      await authenticateUser(values);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      navigate(-1);
-    }
+  const handleLogin = (values: UserSignInRequestBody) => {
+    handleLoginUser(values);
+    navigate(-1);
   };
 
-  const initialValues: FormikValues = {
+  const initialValues: UserSignInRequestBody = {
     username: "",
     password: "",
   };
