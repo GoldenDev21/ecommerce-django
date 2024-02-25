@@ -1,6 +1,6 @@
 import re
 import copy
-from .models import ShippingMethodEnum
+from store.models import ShippingMethodEnum
 
 
 def create_sku(product, variant):

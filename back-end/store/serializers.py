@@ -2,8 +2,8 @@ import decimal
 
 from rest_framework import serializers
 from django.db import transaction
-from .models import Brand, Product, Variant, PromoCode, Order, OrderItem
-from .utils import create_sku, update_instance, get_shipping_price
+from store.models import Brand, Product, Variant, PromoCode, Order, OrderItem
+from store.utils import create_sku, update_instance, get_shipping_price
 
 
 class BrandSerializer(serializers.ModelSerializer):
