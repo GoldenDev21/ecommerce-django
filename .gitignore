@@ -1,5 +1,5 @@
 .idea
-back-end/.env
+back-end/.venv
 back-end/accounts/migrations
 back-end/store/migrations
 back-end/accounts/__pycache__
